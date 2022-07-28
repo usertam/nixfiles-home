@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, username, ... }:
 
 {
   # Allow unfree packages.
@@ -28,6 +28,6 @@
 
   # Metadata.
   home.stateVersion = "22.11";
-  home.username = "tam";
-  home.homeDirectory = "/home/tam";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 }
