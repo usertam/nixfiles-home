@@ -16,9 +16,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nix-index-db.url = "github:usertam/nix-index-database-trial/standalone/nixpkgs-unstable";
+    nix-index-db.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, nix-index-db, ... }:
     let
       username = "tam";
       system = "x86_64-linux";
@@ -26,6 +28,7 @@
     in {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = { inherit nix-index-db; };
         modules = [
           ./programs/common.nix
           ./programs/broot.nix
@@ -35,6 +38,7 @@
           ./programs/git.nix
           ./programs/htop.nix
           ./programs/kitty.nix
+          ./programs/nix-index-db.nix
           ./programs/rbw.nix
           ./programs/ssh.nix
           ./programs/vlc.nix
