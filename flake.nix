@@ -26,11 +26,12 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       nix-index-bin = nix-index-db.packages.${system}.default;
+      extraSpecialArgs = { inherit nix-index-bin; };
     in {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit username nix-index-bin; };
+        inherit pkgs extraSpecialArgs;
         modules = [
+          (import ./programs/home.nix { inherit username; })
           ./programs/common.nix
           ./programs/broot.nix
           ./programs/chromium.nix
