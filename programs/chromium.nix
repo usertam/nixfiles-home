@@ -1,8 +1,9 @@
 { pkgs, ... }:
 
 {
+  # pile of hacks for ungoogled-chromium.
+  # include command line flags, default preferences and extensions.
   programs.chromium = let
-    # configurations for ungoogled-chromium.
     flags = [
       # hardware acceleration configs
       "--disable-features=UseSkiaRenderer,UseChromeOSDirectVideoDecoder"
@@ -24,7 +25,7 @@
       "--prominent-dark-mode-active-tab-title=true"
       "--show-avatar-button=incognito-and-guest"
     ];
-    preferences = {   # TODO: master_preferences
+    preferences = {
       "browser"."last_clear_browsing_data_tab" = 1;
       "enable_do_not_track" = true;
       "profile" = {
@@ -95,11 +96,30 @@
         inherit id version;
         crxPath = "${extension}";
       };
+    mkChromium = { flags, preferences }:
+      (pkgs.ungoogled-chromium.override {
+        commandLineArgs = builtins.concatStringsSep " " flags;
+      }).overrideAttrs (final: prev: {
+        browser = pkgs.symlinkJoin {
+          name = "chromium-unwrapped-pref";
+          paths = [
+            (pkgs.writeTextFile {
+              name = "master_preferences";
+              destination = "/libexec/chromium/master_preferences";
+              text = builtins.toJSON preferences;
+            })
+            pkgs.ungoogled-chromium.browser
+          ];
+        };
+        # dirty way to redirect wrapper to chromium-unwrapped-pref.
+        buildCommand = prev.buildCommand + ''
+          sed -i 's+${pkgs.ungoogled-chromium.browser}+${final.browser}+g' \
+            "$out/bin/chromium"
+        '';
+      });
   in {
     enable = true;
-    package = pkgs.ungoogled-chromium.override {
-      commandLineArgs = builtins.concatStringsSep " " flags;
-    };
+    package = mkChromium { inherit flags preferences; };
     extensions = builtins.map mkExtension extensions;
   };
 }
