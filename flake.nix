@@ -24,10 +24,12 @@
     let
       username = "tam";
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+      nix-index-bin = nix-index-db.packages.${system}.default;
     in {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
-        extraSpecialArgs = { inherit username nix-index-db; };
+        inherit pkgs;
+        extraSpecialArgs = { inherit username nix-index-bin; };
         modules = [
           ./programs/common.nix
           ./programs/broot.nix
