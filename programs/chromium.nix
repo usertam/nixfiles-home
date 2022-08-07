@@ -31,27 +31,28 @@
       "profile" = {
         "name" = "​";
         "avatar_index" = 55;
-        "cookies" = let
-          mkCookieEntry = url: {
-            "${url}" = {
+        "content_settings" = {
+          "pref_version" = 1;
+          "exceptions"."cookies" = let
+            meta = {
               "expiration" = "0";
               "last_modified" = "0";
               "model" = 0;
               "setting" = 1;
             };
+          in {
+            "[*.]discord.com,*" = meta;
+            "[*.]github.com,*" = meta;
+            "[*.]google.com,*" = meta;
+            "[*.]leetcode.com,*" = meta;
+            "[*.]lihkg.com,*" = meta;
+            "[*.]microsoftonline.com,*" = meta;
+            "[*.]reddit.com,*" = meta;
+            "[*.]twitch.tv,*" = meta;
+            "[*.]youtube.com,*" = meta;
+            "web.whatsapp.com,*" = meta;
           };
-        in builtins.map mkCookieEntry [
-          "[*.]discord.com,*"
-          "[*.]github.com,*"
-          "[*.]google.com,*"
-          "[*.]leetcode.com,*"
-          "[*.]lihkg.com,*"
-          "[*.]microsoftonline.com,*"
-          "[*.]reddit.com,*"
-          "[*.]twitch.tv,*"
-          "[*.]youtube.com,*"
-          "web.whatsapp.com,*"
-        ];
+        };
       };
     };
     extensions = [
@@ -99,21 +100,34 @@
     mkChromium = { flags, preferences }:
       (pkgs.ungoogled-chromium.override {
         commandLineArgs = builtins.concatStringsSep " " flags;
-      }).overrideAttrs (final: prev: {
+      }).overrideAttrs (final: prev: let
+        # for some reason prev.browser is not available
+        # using pkgs.ungoogled-chromium.browser as substitute
+        prev_browser = pkgs.ungoogled-chromium.browser;
+      in {
+        # overriding the browser will result in a chromium rebuild
+        # copying a 300MiB binary over is not ideal but it works
         browser = pkgs.symlinkJoin {
-          name = "chromium-unwrapped-pref";
+          name = "${prev_browser.name}-pref-${prev_browser.version}";
           paths = [
             (pkgs.writeTextFile {
               name = "master_preferences";
               destination = "/libexec/chromium/master_preferences";
               text = builtins.toJSON preferences;
             })
-            pkgs.ungoogled-chromium.browser
+            prev_browser
           ];
+          postBuild = ''
+            # the chromium binary must be non-symlinked for preferences to work
+            rm -f $out/libexec/chromium/chromium
+            cp -a ${prev_browser}/libexec/chromium/chromium \
+              $out/libexec/chromium/chromium
+          '';
         };
-        # dirty way to redirect wrapper to chromium-unwrapped-pref.
+
         buildCommand = prev.buildCommand + ''
-          sed -i 's+${pkgs.ungoogled-chromium.browser}+${final.browser}+g' \
+          # redirect wrapper to chromium-unwrapped-pref
+          sed -i 's+${prev_browser}+${final.browser}+g' \
             "$out/bin/chromium"
         '';
       });
