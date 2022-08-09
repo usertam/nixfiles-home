@@ -50,6 +50,7 @@
             "[*.]reddit.com,*" = meta;
             "[*.]twitch.tv,*" = meta;
             "[*.]youtube.com,*" = meta;
+            "ust.space,*" = meta;
             "web.whatsapp.com,*" = meta;
           };
         };
