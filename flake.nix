@@ -14,24 +14,34 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-index-db.url = "github:usertam/nix-index-database-trial/standalone/nixpkgs-unstable";
-    nix-index-db.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-index-db = {
+      url = "github:usertam/nix-index-database-trial/standalone/nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nix-index-db, ... }:
+  outputs = inputs:
     let
       username = "tam";
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-      nix-index-bin = nix-index-db.packages.${system}.default;
-      extraSpecialArgs = { inherit nix-index-bin; };
     in {
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs extraSpecialArgs;
+      homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = {
+          nix-index-bin = inputs.nix-index-db.packages.${system}.default;
+        };
         modules = [
           (import ./programs/home.nix { inherit username; })
+          inputs.plasma-manager.homeManagerModules.plasma-manager
           ./programs/common.nix
           ./programs/broot.nix
           ./programs/chromium.nix
