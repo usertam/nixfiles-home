@@ -26,7 +26,17 @@
       "--show-avatar-button=incognito-and-guest"
     ];
     preferences = {
+      "bookmark_bar"."show_on_all_tabs" = false;
       "browser"."last_clear_browsing_data_tab" = 1;
+      "default_search_provider_data"."template_url_data" = {
+        "date_created" = "0";
+        "is_active" = 1;
+        "keyword" = "g";
+        "last_modified" = "0";
+        "short_name" = "Google";
+        "suggestions_url" = "https://www.google.com/complete/search?client=chrome&q={searchTerms}";
+        "url" = "https://www.google.com/search?q={searchTerms}";
+      };
       "enable_do_not_track" = true;
       "profile" = {
         "name" = "​";
