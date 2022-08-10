@@ -2,7 +2,8 @@
 
 {
   home.packages = let
-    # use non-variable noto-fonts-cjk fonts.
+
+    # non-variable noto cjk sans.
     noto-fonts-cjk-sans-static = pkgs.noto-fonts-cjk-sans.overrideAttrs (final: prev: {
       src = pkgs.fetchFromGitHub {
         owner = "googlefonts";
@@ -15,6 +16,8 @@
         install -m444 -Dt $out/share/fonts/opentype/noto-cjk Sans/OTC/*.ttc
       '';
     });
+
+    # non-variable noto cjk serif.
     noto-fonts-cjk-serif-static = pkgs.noto-fonts-cjk-serif.overrideAttrs (final: prev: {
       src = pkgs.fetchFromGitHub {
         owner = "googlefonts";
@@ -27,6 +30,27 @@
         install -m444 -Dt $out/share/fonts/opentype/noto-cjk Serif/OTC/*.ttc
       '';
     });
+
+    # san francisco pro family.
+    sf-pro = pkgs.stdenvNoCC.mkDerivation {
+      pname = "sf-pro";
+      version = "220707";
+      src = pkgs.fetchurl {
+        url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
+        sha256 = "sha256-o1Zis9kymOicTyDdTPGON2A5LNpDbgOD1XtyQOdxc0M=";
+      };
+      buildInputs = [ pkgs.p7zip ];
+      unpackPhase = ''
+        7z x $src
+        7z x 'SFProFonts/SF Pro Fonts.pkg'
+        7z x 'Payload~'
+      '';
+      installPhase = ''
+        install -m444 -Dt $out/share/fonts/opentype/sf-pro Library/Fonts/*.otf
+        install -m444 -Dt $out/share/fonts/truetype/sf-pro Library/Fonts/*.ttf
+      '';
+    };
+
   in with pkgs; [
     fira-code
     fira-code-symbols
@@ -35,6 +59,7 @@
     noto-fonts-cjk-serif-static
     noto-fonts-emoji
     noto-fonts-extra
+    sf-pro
   ];
 
   # Enable fontconfig configuration.
