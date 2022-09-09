@@ -122,8 +122,8 @@
           name = "${prev_browser.name}-pref-${prev_browser.version}";
           paths = [
             (pkgs.writeTextFile {
-              name = "master_preferences";
-              destination = "/libexec/chromium/master_preferences";
+              name = "initial_preferences";
+              destination = "/libexec/chromium/initial_preferences";
               text = builtins.toJSON preferences;
             })
             prev_browser
