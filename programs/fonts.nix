@@ -1,7 +1,8 @@
 { pkgs, ... }:
 
 {
-  fonts.fonts = let
+  home.packages = let
+
     # non-variable noto cjk sans.
     noto-fonts-cjk-sans-static = pkgs.noto-fonts-cjk-sans.overrideAttrs (final: prev: {
       src = pkgs.fetchFromGitHub {
