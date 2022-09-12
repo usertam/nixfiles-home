@@ -58,7 +58,6 @@
     noto-fonts-cjk-sans-static
     noto-fonts-cjk-serif-static
     noto-fonts-emoji
-    noto-fonts-extra
     sf-pro
   ];
 

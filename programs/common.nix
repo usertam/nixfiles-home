@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, graphical, ... }:
 
 {
   # Allow unfree packages.
@@ -12,17 +12,20 @@
     axel
     clang
     ccache
-    discord
     gdb
     imagemagick
-    latte-dock
     lesspipe
-    obs-studio
-    progress
+    nano
     podman-compose
     podman-tui
     rclone
     streamlink
+  ] ++ (lib.optionals pkgs.stdenv.isLinux [
+    progress
+  ]) ++ (lib.optionals (graphical && pkgs.stdenv.isLinux) [
+    discord
+    latte-dock
+    obs-studio
     vmware-workstation
-  ];
+  ]);
 }

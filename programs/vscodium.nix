@@ -37,7 +37,6 @@
         };
       };
     in with pkgs.vscode-extensions; [
-      ms-vscode.cpptools
       antfu.icons-carbon
       streetsidesoftware.code-spell-checker
       github.copilot
@@ -48,9 +47,11 @@
       bbenoist.nix
       one-monokai
       ms-python.vscode-pylance
-      ms-python.python
       foxundermoon.shell-format
       redhat.vscode-yaml
+    ] ++ lib.optionals pkgs.stdenv.isLinux [
+      ms-vscode.cpptools
+      ms-python.python
     ];
     userSettings = {
       # Editor font & animations.

@@ -33,29 +33,32 @@
     let
       username = "tam";
       system = "x86_64-linux";
+      graphical = true;
     in {
-      homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration rec {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
-          nix-index-bin = inputs.nix-index-db.packages.${system}.default;
+          inherit inputs username graphical;
         };
         modules = [
-          (import ./programs/home.nix { inherit username; })
-          inputs.plasma-manager.homeManagerModules.plasma-manager
+          ./programs/home.nix
           ./programs/common.nix
           ./programs/broot.nix
-          ./programs/chromium.nix
           ./programs/direnv.nix
-          ./programs/fonts.nix
           ./programs/git.nix
           ./programs/htop.nix
           ./programs/kitty.nix
           ./programs/nix-index-db.nix
           ./programs/rbw.nix
           ./programs/ssh.nix
-          ./programs/vlc.nix
+          ./programs/zsh.nix
+        ] ++ (pkgs.lib.optionals graphical [
+          ./programs/fonts.nix
           ./programs/vscodium.nix
-        ];
+        ]) ++ (pkgs.lib.optionals (graphical && pkgs.stdenv.isLinux) [
+          ./programs/chromium.nix
+          ./programs/vlc.nix
+        ]);
       };
     };
 }

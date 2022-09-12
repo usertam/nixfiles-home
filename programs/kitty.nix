@@ -20,9 +20,16 @@
       touch_scroll_multiplier     5.0
       strip_trailing_spaces       smart
       remember_window_size        no
-      initial_window_width        750
-      initial_window_height       500
-      window_padding_width        10
-    '';
+    '' + (
+      if pkgs.stdenv.isDarwin then ''
+        font_size                   14
+        window_padding_width        12.5
+      ''
+      else ''
+        initial_window_width        750
+        initial_window_height       500
+        window_padding_width        10
+      ''
+    );
   };
 }

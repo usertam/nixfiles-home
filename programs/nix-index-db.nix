@@ -1,7 +1,7 @@
-{ nix-index-bin, ... }:
+{ pkgs, inputs, ... }:
 
 {
   home.file.".cache/nix-index/files" = {
-    source = nix-index-bin;
+    source = inputs.nix-index-db.packages.${pkgs.system}.default;
   };
 }

@@ -10,6 +10,6 @@
       signByDefault = true;
     };
     extraConfig.commit.defaultBranch = "master";
-    delta.enable = true;
+    extraConfig.core.editor = "nano";
   };
 }
