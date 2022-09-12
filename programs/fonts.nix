@@ -34,10 +34,10 @@
     # san francisco pro family.
     sf-pro = pkgs.stdenvNoCC.mkDerivation {
       pname = "sf-pro";
-      version = "220707";
+      version = "220831"; # curl -v ... 2>&1 | grep Last-Modified
       src = pkgs.fetchurl {
         url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-        sha256 = "sha256-o1Zis9kymOicTyDdTPGON2A5LNpDbgOD1XtyQOdxc0M=";
+        sha256 = "sha256-HtJ/KdIVOdYocuzQ8qkzTAm7bMITCq3Snv+Bo9WO9iA=";
       };
       buildInputs = [ pkgs.p7zip ];
       unpackPhase = ''
