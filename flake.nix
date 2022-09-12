@@ -19,7 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-db = {
-      url = "github:usertam/nix-index-database-trial/standalone/nixpkgs-unstable";
+      url = "github:usertam/nix-index-db/standalone/nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
