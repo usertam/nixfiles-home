@@ -20,6 +20,7 @@
       touch_scroll_multiplier     5.0
       strip_trailing_spaces       smart
       remember_window_size        no
+      confirm_os_window_close     0
     '' + (
       if pkgs.stdenv.isDarwin then ''
         font_size                   14
