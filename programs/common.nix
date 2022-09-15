@@ -14,6 +14,7 @@
     ccache
     gdb
     gnupg
+    home-manager
     imagemagick
     lesspipe
     nano
