@@ -13,9 +13,11 @@
     clang
     ccache
     gdb
+    gnupg
     imagemagick
     lesspipe
     nano
+    openssh
     podman-compose
     podman-tui
     rclone
