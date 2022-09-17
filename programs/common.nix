@@ -22,11 +22,10 @@
     podman-compose
     podman-tui
     rclone
+  ] ++ (lib.optionals graphical [
+    discord-canary
     streamlink
-  ] ++ (lib.optionals pkgs.stdenv.isLinux [
-    progress
   ]) ++ (lib.optionals (graphical && pkgs.stdenv.isLinux) [
-    discord
     latte-dock
     obs-studio
     vmware-workstation
