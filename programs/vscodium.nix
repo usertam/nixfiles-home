@@ -74,6 +74,8 @@
       "security.workspace.trust.untrustedFiles" = "newWindow";
       # Telemetry.
       "redhat.telemetry.enabled" = false;
+      # Disable updates.
+      "update.mode" = "none";
     };
   };
 }
