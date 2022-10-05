@@ -12,16 +12,19 @@
     axel
     clang
     ccache
+    coreutils
     gdb
     gnupg
     home-manager
     imagemagick
     lesspipe
     nano
+    nix-index
     openssh
     podman-compose
     podman-tui
     rclone
+    rsync
   ] ++ (lib.optionals graphical [
     discord-canary
     streamlink
