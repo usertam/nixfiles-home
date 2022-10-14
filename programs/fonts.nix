@@ -54,6 +54,7 @@
   in with pkgs; [
     fira-code
     fira-code-symbols
+    libertinus
     noto-fonts
     noto-fonts-cjk-sans-static
     noto-fonts-cjk-serif-static
