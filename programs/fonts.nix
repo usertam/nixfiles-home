@@ -37,7 +37,7 @@
       version = "220831"; # curl -v ... 2>&1 | grep Last-Modified
       src = pkgs.fetchurl {
         url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-        sha256 = "sha256-HtJ/KdIVOdYocuzQ8qkzTAm7bMITCq3Snv+Bo9WO9iA=";
+        sha256 = "sha256-g/eQoYqTzZwrXvQYnGzDFBEpKAPC8wHlUw3NlrBabHw=";
       };
       buildInputs = [ pkgs.p7zip ];
       unpackPhase = ''
