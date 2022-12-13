@@ -62,6 +62,7 @@
       ms-python.vscode-pylance
       foxundermoon.shell-format
       redhat.vscode-yaml
+      redhat.vscode-xml
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       ms-vscode.cpptools
       ms-python.python
