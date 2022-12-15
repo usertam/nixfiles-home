@@ -10,7 +10,7 @@
         repo = "noto-cjk";
         rev = "9f7f3c38eab63e1d1fddd8d50937fe4f1eacdb1d";
         sha256 = "sha256-pNC/WJCYHSlU28E/CSFsrEMbyCe/6tjevDlOvDK9RwU=";
-        sparseCheckout = "Sans/OTC";
+        sparseCheckout = [ "Sans/OTC" ];
       };
       installPhase = ''
         install -m444 -Dt $out/share/fonts/opentype/noto-cjk Sans/OTC/*.ttc
@@ -24,7 +24,7 @@
         repo = "noto-cjk";
         rev = "9f7f3c38eab63e1d1fddd8d50937fe4f1eacdb1d";
         sha256 = "sha256-Iy4lmWj5l+/Us/dJJ/Jl4MEojE9mrFnhNQxX2zhVngY=";
-        sparseCheckout = "Serif/OTC";
+        sparseCheckout = [ "Serif/OTC" ];
       };
       installPhase = ''
         install -m444 -Dt $out/share/fonts/opentype/noto-cjk Serif/OTC/*.ttc
