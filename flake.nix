@@ -33,12 +33,12 @@
     let
       username = "tam";
       system = "x86_64-linux";
-      graphical = true;
+      desktop = true;
     in {
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration rec {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
-          inherit inputs username graphical;
+          inherit inputs username desktop;
         };
         modules = [
           ./programs/home.nix
@@ -52,10 +52,10 @@
           ./programs/rbw.nix
           ./programs/ssh.nix
           ./programs/zsh.nix
-        ] ++ (pkgs.lib.optionals graphical [
+        ] ++ (pkgs.lib.optionals desktop [
           ./programs/fonts.nix
           ./programs/vscodium.nix
-        ]) ++ (pkgs.lib.optionals (graphical && pkgs.stdenv.isLinux) [
+        ]) ++ (pkgs.lib.optionals (desktop && pkgs.stdenv.isLinux) [
           ./programs/chromium.nix
           ./programs/vlc.nix
         ]);

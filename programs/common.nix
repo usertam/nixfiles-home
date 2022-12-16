@@ -1,4 +1,4 @@
-{ pkgs, lib, graphical, ... }:
+{ pkgs, lib, desktop, ... }:
 
 {
   # Allow unfree packages.
@@ -25,10 +25,10 @@
     podman-tui
     rclone
     rsync
-  ] ++ (lib.optionals graphical [
+  ] ++ (lib.optionals desktop [
     discord-canary
     streamlink
-  ]) ++ (lib.optionals (graphical && pkgs.stdenv.isLinux) [
+  ]) ++ (lib.optionals (desktop && pkgs.stdenv.isLinux) [
     latte-dock
     obs-studio
     vmware-workstation
