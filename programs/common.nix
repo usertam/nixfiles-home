@@ -13,6 +13,7 @@
     clang
     ccache
     coreutils
+    findutils
     gdb
     gnupg
     home-manager
