@@ -23,6 +23,7 @@
     openssh
     podman-compose
     podman-tui
+    poppler_utils
     rclone
     rsync
   ] ++ (lib.optionals desktop [
