@@ -14,7 +14,6 @@
     ccache
     coreutils
     findutils
-    gdb
     gnupg
     home-manager
     imagemagick
@@ -30,6 +29,8 @@
   ] ++ (lib.optionals desktop [
     discord-canary
     streamlink
+  ]) ++ (lib.optionals pkgs.stdenv.isLinux [
+    gdb
   ]) ++ (lib.optionals (desktop && pkgs.stdenv.isLinux) [
     latte-dock
     obs-studio
