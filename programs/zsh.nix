@@ -5,11 +5,7 @@
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    initExtra = "compinit"; # workaround
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "command-not-found" "git" ];
-    };
+    localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
     plugins = [
       {
         name = "spaceship-prompt";
