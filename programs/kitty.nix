@@ -24,6 +24,7 @@
     '' + (
       if pkgs.stdenv.isDarwin then ''
         font_size                   14
+        macos_option_as_alt         yes
         window_padding_width        12.5
       ''
       else ''
