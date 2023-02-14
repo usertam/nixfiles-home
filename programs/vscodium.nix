@@ -74,7 +74,7 @@
       "editor.fontSize" = 15;
       "editor.fontLigatures" = true;
       "editor.cursorBlinking" = "solid";
-      "editor.cursorSmoothCaretAnimation" = true;
+      "editor.cursorSmoothCaretAnimation" = "on";
       "editor.smoothScrolling" = true;
       # Window appearance.
       "window.titleBarStyle" = "custom";
