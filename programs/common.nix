@@ -1,20 +1,18 @@
-{ pkgs, lib, desktop, ... }:
+{ pkgs, lib, ... }:
 
 {
   # Allow unfree packages.
   nixpkgs.config.allowUnfreePredicate = pkg: true;
-  # builtins.elem (lib.getName pkg) [
-  #   "discord"
-  #   "vmware-workstation"
-  # ];
 
   home.packages = with pkgs; [
     axel
     clang
     ccache
     coreutils
+    discord-canary
     findutils
     gnupg
+    gnused
     home-manager
     imagemagick
     lesspipe
@@ -24,16 +22,8 @@
     podman-compose
     podman-tui
     poppler_utils
+    python3
     rclone
     rsync
-  ] ++ (lib.optionals desktop [
-    discord-canary
-    streamlink
-  ]) ++ (lib.optionals pkgs.stdenv.isLinux [
-    gdb
-  ]) ++ (lib.optionals (desktop && pkgs.stdenv.isLinux) [
-    latte-dock
-    obs-studio
-    vmware-workstation
-  ]);
+  ];
 }
