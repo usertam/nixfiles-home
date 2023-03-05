@@ -5,19 +5,24 @@
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    initExtra = ''
-      autoload -U up-line-or-beginning-search
-      autoload -U down-line-or-beginning-search
-      zle -N up-line-or-beginning-search
-      zle -N down-line-or-beginning-search
-      bindkey "^[[A" up-line-or-beginning-search
-      bindkey "^[[B" down-line-or-beginning-search
-    '';
-    localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
+
+    # cherry-pick oh-my-zsh configs.
+    initExtra = lib.concatMapStrings (a: "source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/${a}.zsh;")
+      [ "completion" "key-bindings" "termsupport" ];
+
+    # enable spaceship theme.
     plugins = lib.singleton {
       name = "spaceship-prompt";
       src = pkgs.spaceship-prompt;
       file = "share/zsh/themes/spaceship.zsh-theme";
     };
+
+    # turn off spaceship exec time decimals.
+    localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
+
+    # enable color output.
+    shellAliases = builtins.listToAttrs
+      (map (attr: { name = attr; value = "${attr} --color=auto"; })
+        [ "diff" "grep" "ls" ]);
   };
 }
