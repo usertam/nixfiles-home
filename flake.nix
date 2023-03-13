@@ -39,6 +39,7 @@
           ./programs/git.nix
           ./programs/htop.nix
           ./programs/kitty.nix
+          ./programs/less.nix
           ./programs/nix.nix
           ./programs/nix-index-db.nix
           ./programs/rbw.nix
