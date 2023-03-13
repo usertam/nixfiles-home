@@ -30,6 +30,7 @@
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
           inherit inputs username desktop;
+          lock = inputs.nixpkgs.lib.importJSON ./flake.lock;
         };
         modules = [
           ./programs/home.nix
