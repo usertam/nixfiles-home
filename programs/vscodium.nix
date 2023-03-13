@@ -3,12 +3,6 @@
 {
   # Allow unfree packages.
   nixpkgs.config.allowUnfreePredicate = pkg: true;
-  # builtins.elem (lib.getName pkg) [
-  #   "vscode-extension-ms-vscode-cpptools"
-  #   "vscode-extension-github-copilot"
-  #   "vscode-extension-MS-python-vscode-pylance"
-  #   "vscode-extension-visualstudioexptteam-vscodeintellicode"
-  # ];
 
   programs.vscode = {
     enable = true;
@@ -68,14 +62,20 @@
       ms-python.python
     ];
     userSettings = {
-      # Editor font & animations.
+      # editor font.
       "editor.fontFamily" = "Fira Code";
-      "editor.fontWeight" = "500";
+      "editor.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
       "editor.fontSize" = 15;
       "editor.fontLigatures" = true;
+      # editor animations.
       "editor.cursorBlinking" = "solid";
       "editor.cursorSmoothCaretAnimation" = "on";
       "editor.smoothScrolling" = true;
+      # terminal font.
+      "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
+      "terminal.integrated.fontSize" = 13;
+      "terminal.integrated.fontLigatures" = true;
+      "terminal.integrated.smoothScrolling" = true;
       # Window appearance.
       "window.titleBarStyle" = "custom";
       "workbench.colorTheme" = "One Monokai";
