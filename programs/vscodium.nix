@@ -8,17 +8,6 @@
     enable = true;
     package = pkgs.vscodium;
     extensions = let
-      vscodeintellicode = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "vscodeintellicode";
-          publisher = "visualstudioexptteam";
-          version = "1.2.29";
-          sha256 = "sha256-Wl++d7mCOjgL7vmVVAKPQQgWRSFlqL4ry7v0wob1OyU=";
-        };
-        meta = {
-          license = lib.licenses.unfree;
-        };
-      };
       one-monokai = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
           name = "one-monokai";
@@ -30,30 +19,15 @@
           license = lib.licenses.mit;
         };
       };
-      # no debugger support
-      cpptools = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "cpptools";
-          publisher = "ms-vscode";
-          version = "1.12.4";
-          sha256 = "sha256-06RhOh/jNj4HTtywEcv2SU2WhCtLr2bgPCO+VvUbFYI=";
-        };
-        meta = {
-          license = lib.licenses.unfree;
-        };
-      };
     in with pkgs.vscode-extensions; [
       antfu.icons-carbon
       streetsidesoftware.code-spell-checker
       github.copilot
       eamodio.gitlens
-      vscodeintellicode
       james-yu.latex-workshop
       pkief.material-icon-theme
       bbenoist.nix
       one-monokai
-      cpptools
-      ms-python.vscode-pylance
       foxundermoon.shell-format
       redhat.vscode-yaml
       redhat.vscode-xml
