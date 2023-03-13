@@ -23,13 +23,12 @@
   outputs = inputs: let
     forAllSystems = with inputs.nixpkgs.lib; genAttrs platforms.unix;
     username = "tam";
-    desktop = true;
   in {
     packages = forAllSystems (system: {
       homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration rec {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
-          inherit inputs username desktop;
+          inherit inputs username;
           lock = inputs.nixpkgs.lib.importJSON ./flake.lock;
         };
         modules = [
@@ -37,6 +36,7 @@
           ./programs/common.nix
           ./programs/broot.nix
           ./programs/direnv.nix
+          ./programs/fonts.nix
           ./programs/git.nix
           ./programs/htop.nix
           ./programs/kitty.nix
@@ -45,14 +45,9 @@
           ./programs/nix-index-db.nix
           ./programs/rbw.nix
           ./programs/ssh.nix
-          ./programs/zsh.nix
-        ] ++ (pkgs.lib.optionals desktop [
-          ./programs/fonts.nix
           ./programs/vscodium.nix
-        ]) ++ (pkgs.lib.optionals (desktop && pkgs.stdenv.isLinux) [
-          ./programs/chromium.nix
-          ./programs/vlc.nix
-        ]);
+          ./programs/zsh.nix
+        ];
       };
     });
   };
