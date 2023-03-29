@@ -7,8 +7,11 @@
     enableCompletion = true;
 
     # cherry-pick oh-my-zsh configs.
-    initExtra = lib.concatMapStrings (a: "source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/${a}.zsh;")
-      [ "completion" "key-bindings" "termsupport" ];
+    initExtra = lib.concatMapStrings
+      (a: "source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/${a}.zsh;")
+      [ "completion" "key-bindings" ] + ''
+        setopt correct
+      '';
 
     # enable spaceship theme.
     plugins = lib.singleton {
