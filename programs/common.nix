@@ -11,6 +11,7 @@
     coreutils
     discord-canary
     findutils
+    gnugrep
     gnupg
     gnused
     home-manager
