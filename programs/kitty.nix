@@ -26,6 +26,12 @@
         font_size                   14
         macos_option_as_alt         yes
         window_padding_width        12.5
+        map alt+left  send_text all \x1b\x62
+        map alt+right send_text all \x1b\x66
+        map cmd+left  send_text all \x01
+        map cmd+right send_text all \x05
+        map cmd+]     next_window
+        map cmd+[     previous_window
       ''
       else ''
         initial_window_width        750
