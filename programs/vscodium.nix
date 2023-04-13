@@ -17,6 +17,15 @@
         };
         meta.license = lib.licenses.mit;
       };
+      github-copilot-nightly = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "copilot-nightly";
+          publisher = "github";
+          version = "1.82.21";
+          sha256 = "sha256-m6HDRp/LyyqVHsu1wvmkur5yBWSK68b5JCeH6QQF+D0=";
+        };
+        meta.license = lib.licenses.unfree;
+      };
       github-copilot-labs = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
           name = "copilot-labs";
@@ -29,7 +38,7 @@
     in with pkgs.vscode-extensions; [
       antfu.icons-carbon
       streetsidesoftware.code-spell-checker
-      github.copilot
+      github-copilot-nightly
       github-copilot-labs
       eamodio.gitlens
       james-yu.latex-workshop
