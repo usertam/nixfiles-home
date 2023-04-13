@@ -8,26 +8,34 @@
     enable = true;
     package = pkgs.vscodium;
     extensions = let
-      one-monokai = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+      azemoh-one-monokai = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
           name = "one-monokai";
           publisher = "azemoh";
           version = "0.5.0";
           sha256 = "sha256-ardM7u9lXkkTTPsDVqTl4yniycERYdwTzTQxaa4dD+c=";
         };
-        meta = {
-          license = lib.licenses.mit;
+        meta.license = lib.licenses.mit;
+      };
+      github-copilot-labs = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "copilot-labs";
+          publisher = "github";
+          version = "0.12.791";
+          sha256 = "sha256-3StswisTiG1e+LZeAuquIXlqaFj0Lzk4WNy+6Af4giw=";
         };
+        meta.license = lib.licenses.unfree;
       };
     in with pkgs.vscode-extensions; [
       antfu.icons-carbon
       streetsidesoftware.code-spell-checker
       github.copilot
+      github-copilot-labs
       eamodio.gitlens
       james-yu.latex-workshop
       pkief.material-icon-theme
       bbenoist.nix
-      one-monokai
+      azemoh-one-monokai
       foxundermoon.shell-format
       redhat.vscode-yaml
       redhat.vscode-xml
@@ -45,6 +53,8 @@
       "editor.cursorBlinking" = "solid";
       "editor.cursorSmoothCaretAnimation" = "on";
       "editor.smoothScrolling" = true;
+      # github copilot.
+      "editor.inlineSuggest.enabled" = true;
       # terminal font.
       "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
       "terminal.integrated.fontSize" = 13;
