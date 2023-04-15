@@ -48,6 +48,7 @@
       foxundermoon.shell-format
       redhat.vscode-yaml
       redhat.vscode-xml
+      llvm-vs-code-extensions.vscode-clangd
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       ms-vscode.cpptools
       ms-python.python
