@@ -6,7 +6,7 @@
     package = pkgs.kitty;
     font = {
       package = pkgs.fira-code;
-      name = "Fira Code Medium";
+      name = "Fira Code" + (if pkgs.stdenv.isDarwin then "" else " Medium");
       size = 12;
     };
     extraConfig = ''
