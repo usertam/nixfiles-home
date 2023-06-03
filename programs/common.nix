@@ -26,6 +26,7 @@
     podman-tui
     poppler_utils
     python3
+    qrencode
     rclone
     rsync
   ];

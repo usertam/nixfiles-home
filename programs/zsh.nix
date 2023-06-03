@@ -11,6 +11,13 @@
       (a: "source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/${a}.zsh;")
       [ "completion" "key-bindings" ] + ''
         setopt correct
+      '' + ''
+        # alias for qrencode, imagemagick and kitty +kitten icat.
+        function qrcode() {
+          printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:-https://github.com/usertam}" -o- | \
+            ${pkgs.imagemagick}/bin/convert -scale "''${2:-400%}" png:- png:-  | \
+            ${pkgs.kitty}/bin/kitty +kitten icat
+        }
       '';
 
     # enable spaceship theme.
