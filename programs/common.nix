@@ -9,11 +9,13 @@
     clang
     ccache
     coreutils
+    diffutils
     discord-canary
     findutils
     gnugrep
     gnupg
     gnused
+    graphicsmagick
     home-manager
     imagemagick
     lesspipe
