@@ -12,5 +12,6 @@
     extraConfig.commit.defaultBranch = "master";
     extraConfig.core.editor = "nano";
     extraConfig.core.excludesfile = builtins.toFile "gitignore" ".DS_Store\n";
+    extraConfig.core.pager = "less -+X";
   };
 }
