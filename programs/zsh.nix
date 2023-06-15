@@ -31,8 +31,11 @@
     localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
 
     # enable color output.
-    shellAliases = builtins.listToAttrs
+    shellAliases = (builtins.listToAttrs
       (map (attr: { name = attr; value = "${attr} --color=auto"; })
-        [ "diff" "grep" "ls" ]);
+        [ "diff" "grep" "ls" ]))
+    // {
+      qrcode = "noglob qrcode";
+    };
   };
 }
