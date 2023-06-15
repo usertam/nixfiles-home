@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ inputs, pkgs, lib, ... }:
 
 {
   programs.zsh = {
@@ -12,6 +12,46 @@
       [ "completion" "key-bindings" ] + ''
         setopt correct
       '' + ''
+        # command-not-found handle.
+        function command_not_found_handler() {
+          # taken from http://www.linuxjournal.com/content/bash-command-not-found
+          # - do not run when inside Midnight Commander or within a Pipe
+          if [[ -n "''${MC_SID-}" ]] || ! [[ -t 1 ]]; then
+            >&2 echo "zsh: $1: command not found"
+            return 127
+          fi
+
+          # warn command not found and indicate ongoing dots.
+          >&2 printf '\e[2m'
+          >&2 printf "zsh: $1: command not found..."
+
+          ATTR=$(${pkgs.nix-index}/bin/nix-locate \
+            --top-level --minimal --at-root --whole-name "/bin/$1")
+          COUNT=$(echo -n "$ATTR" | grep -c '^')
+
+          # remove ongoing dots.
+          >&2 printf '\b\b  \b'
+
+          case $COUNT in
+            0)
+              >&2 printf '\b\n\e[0m'
+              return 127;;
+            *)
+              >&2 printf 'available with nix.\n\e[0m'
+              if [ $COUNT -gt 1 ]; then
+                ATTR="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy)"
+              fi
+              if [ -z "$ATTR" ]; then
+                return 127
+              fi
+              >&2 printf '\e[2m'
+              >&2 printf "> nix shell nixpkgs#''${ATTR%.out}\n"
+              >&2 printf "> $*\n\e[0m"
+              (trap : INT; nix shell "nixpkgs#$ATTR" -c $@; nix shell "nixpkgs#$ATTR")
+              return;;
+          esac
+        }
+
         # alias for qrencode, imagemagick and kitty +kitten icat.
         function qrcode() {
           printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:-https://github.com/usertam}" -o- | \
@@ -32,6 +72,9 @@
 
     # turn off spaceship exec time decimals.
     localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
+
+    # ignore stupid autocorrect suggestions.
+    localVariables.CORRECT_IGNORE = "[_|.]*";
 
     # enable color output.
     shellAliases = (builtins.listToAttrs
