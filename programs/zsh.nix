@@ -27,6 +27,9 @@
       file = "share/zsh/themes/spaceship.zsh-theme";
     };
 
+    # enable less scrolling.
+    sessionVariables.LESS = "-R";
+
     # turn off spaceship exec time decimals.
     localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
 
