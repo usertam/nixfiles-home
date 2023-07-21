@@ -55,7 +55,7 @@
         # alias for qrencode, imagemagick and kitty +kitten icat.
         function qrcode() {
           printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:-https://github.com/usertam}" -o- | \
-            ${pkgs.imagemagick}/bin/convert -scale "''${2:-400%}" png:- png:-  | \
+            ${pkgs.imagemagick}/bin/convert -scale "''${2:-200%}" png:- png:-  | \
             ${pkgs.kitty}/bin/kitty +kitten icat
         }
       '';
