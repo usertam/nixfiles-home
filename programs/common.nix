@@ -5,7 +5,6 @@
   nixpkgs.config.allowUnfreePredicate = pkg: true;
 
   home.packages = with pkgs; [
-    btop
     coreutils
     diffutils
     discord-canary

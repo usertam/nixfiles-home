@@ -35,6 +35,7 @@
           ./programs/home.nix
           ./programs/common.nix
           ./programs/broot.nix
+          ./programs/btop.nix
           ./programs/direnv.nix
           ./programs/fonts.nix
           ./programs/git.nix
