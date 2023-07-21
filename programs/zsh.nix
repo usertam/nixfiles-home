@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs.zsh = {
@@ -30,23 +30,23 @@
           COUNT=$(echo -n "$ATTR" | grep -c '^')
 
           # remove ongoing dots.
-          >&2 printf '\b\b  \b'
+          >&2 printf '\b\b  \b\b\e[0m'
 
           case $COUNT in
             0)
-              >&2 printf '\b\n\e[0m'
+              >&2 printf '\n'
               return 127;;
             *)
-              >&2 printf 'available with nix.\n\e[0m'
               if [ $COUNT -gt 1 ]; then
                 ATTR="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy)"
               fi
               if [ -z "$ATTR" ]; then
                 return 127
               fi
+              >&2 printf '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
               >&2 printf '\e[2m'
-              >&2 printf "> nix shell nixpkgs#''${ATTR%.out}\n"
-              >&2 printf "> $*\n\e[0m"
+              >&2 printf 'prepend to path.  \n'
+              >&2 printf '> nix shell nixpkgs#%s\e[0m\n' "''${ATTR%.out}"
               (trap : INT; nix shell "nixpkgs#$ATTR" -c $@; nix shell "nixpkgs#$ATTR")
               return;;
           esac
