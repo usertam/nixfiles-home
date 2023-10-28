@@ -17,39 +17,40 @@
           # taken from http://www.linuxjournal.com/content/bash-command-not-found
           # - do not run when inside Midnight Commander or within a Pipe
           if [[ -n "''${MC_SID-}" ]] || ! [[ -t 1 ]]; then
-            >&2 echo "zsh: $1: command not found"
+            >&2 printf 'zsh: %s: command not found' "$1"
             return 127
           fi
 
           # warn command not found and indicate ongoing dots.
           >&2 printf '\e[2m'
-          >&2 printf "zsh: $1: command not found..."
+          >&2 printf 'zsh: %s: command not found...' "$1"
+          BACK=$(printf 'zsh: %s: command not found...' "$1" | wc -c)
 
           ATTR=$(${pkgs.nix-index}/bin/nix-locate \
             --top-level --minimal --at-root --whole-name "/bin/$1")
           COUNT=$(echo -n "$ATTR" | grep -c '^')
 
-          # remove ongoing dots.
-          >&2 printf '\b\b  \b\b\e[0m'
+          if [ $COUNT -eq 0 ]; then
+            # remove ongoing dots. ("..." -> ".")
+            >&2 printf '\b\b  \b\b\e[0m\n'
+            return 127
+          fi
 
-          case $COUNT in
-            0)
-              >&2 printf '\n'
-              return 127;;
-            *)
-              if [ $COUNT -gt 1 ]; then
-                ATTR="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy)"
-              fi
-              if [ -z "$ATTR" ]; then
-                return 127
-              fi
-              >&2 printf '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
-              >&2 printf '\e[2m'
-              >&2 printf 'prepend to path.  \n'
-              >&2 printf '> nix shell nixpkgs#%s\e[0m\n' "''${ATTR%.out}"
-              (trap : INT; nix shell "nixpkgs#$ATTR" -c $@; nix shell "nixpkgs#$ATTR")
-              return;;
-          esac
+          # wipe the whole line.
+          >&2 printf '\b \b%.0s' {1..$BACK}
+          >&2 printf 'zsh: %s: conjuring up nix shell...\n' "$1"
+
+          if [ $COUNT -gt 1 ]; then
+            # select candidates, auto-fill the first result as prompt
+            PROMPT="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy -e "$1" | head -1 | cut -d. -f1)"
+            ATTR="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy -p '> nix shell nixpkgs#' -q "$PROMPT")"
+            if [ -z "$ATTR" ]; then return 127; fi
+            >&2 printf '\e[2m'
+          fi
+
+          >&2 printf '> nix shell nixpkgs#%s\e[0m\n' "''${ATTR%.out}"
+          (trap : INT; nix shell "nixpkgs#$ATTR" -c $@; nix shell "nixpkgs#$ATTR")
+          return
         }
 
         # alias for qrencode, imagemagick and kitty +kitten icat.
