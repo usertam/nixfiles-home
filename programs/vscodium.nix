@@ -80,6 +80,9 @@
       "terminal.integrated.fontSize" = 13;
       "terminal.integrated.fontLigatures" = true;
       "terminal.integrated.smoothScrolling" = true;
+      # Deny chord keybindings; fix nano keybindings.
+      "terminal.integrated.allowChords" = false;
+      "terminal.integrated.sendKeybindingsToShell" = true;
       # Window appearance.
       "window.titleBarStyle" = "custom";
       "workbench.colorTheme" = "One Monokai";
