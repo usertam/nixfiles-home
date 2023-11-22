@@ -35,6 +35,15 @@
         };
         meta.license = lib.licenses.unfree;
       };
+      hashicorp-hcl = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "hcl";
+          publisher = "hashicorp";
+          version = "0.3.2";
+          sha256 = "sha256-cxF3knYY29PvT3rkRS8SGxMn9vzt56wwBXpk2PqO0mo=";
+        };
+        meta.license = lib.licenses.mpl20;
+      };
       mrmlnc-vscode-apache = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
           name = "vscode-apache";
@@ -50,6 +59,8 @@
       github-copilot-nightly
       github-copilot-labs
       eamodio.gitlens
+      hashicorp-hcl
+      hashicorp.terraform
       james-yu.latex-workshop
       pkief.material-icon-theme
       bbenoist.nix
