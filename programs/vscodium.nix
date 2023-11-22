@@ -75,6 +75,8 @@
       "editor.smoothScrolling" = true;
       # github copilot.
       "editor.inlineSuggest.enabled" = true;
+      # Allow zh-hant unicode symbols.
+      "editor.unicodeHighlight.allowedLocales"."zh-hant" = true;
       # terminal font.
       "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
       "terminal.integrated.fontSize" = 13;
