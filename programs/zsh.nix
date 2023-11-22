@@ -53,6 +53,19 @@
           return
         }
 
+        function home-manager-commit() {
+          ( 
+            set -e
+            cd ~/Desktop/projects/nixfiles-home
+            git switch home-manager-lock
+            git switch home-manager
+            git add .
+            git commit
+            git switch -
+            git rebase -
+          )
+        }
+
         # alias for qrencode, imagemagick and kitty +kitten icat.
         function qrcode() {
           printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:-https://github.com/usertam}" -o- | \
