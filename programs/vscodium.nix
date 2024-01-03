@@ -26,23 +26,23 @@
         };
         meta.license = lib.licenses.unfree;
       };
-      github-copilot-labs = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+      github-copilot-chat = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
-          name = "copilot-labs";
+          name = "copilot-chat";
           publisher = "github";
-          version = "0.14.884";
-          sha256 = "sha256-44t4qdRjw/sdAmO6uW9CaLzs0hJcK+uQnpalCNB8AdM=";
+          version = "0.11.1";
+          sha256 = "sha256-H2AIr/797x3cKqIOiqFwntlRvPjriKCPyPRTEOyN8Ik=";
         };
         meta.license = lib.licenses.unfree;
       };
-      hashicorp-hcl = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+      terraform = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
-          name = "hcl";
-          publisher = "hashicorp";
-          version = "0.3.2";
-          sha256 = "sha256-cxF3knYY29PvT3rkRS8SGxMn9vzt56wwBXpk2PqO0mo=";
+          name = "terraform";
+          publisher = "4ops";
+          version = "0.2.5";
+          sha256 = "sha256-y5LljxK8V9Fir9EoG8g9N735gISrlMg3czN21qF/KjI=";
         };
-        meta.license = lib.licenses.mpl20;
+        meta.license = lib.licenses.mit;
       };
       mrmlnc-vscode-apache = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -57,15 +57,14 @@
       antfu.icons-carbon
       streetsidesoftware.code-spell-checker
       github-copilot-nightly
-      github-copilot-labs
+      github-copilot-chat
       eamodio.gitlens
-      hashicorp-hcl
-      hashicorp.terraform
       james-yu.latex-workshop
       pkief.material-icon-theme
       bbenoist.nix
       azemoh-one-monokai
       foxundermoon.shell-format
+      terraform
       redhat.vscode-yaml
       redhat.vscode-xml
       llvm-vs-code-extensions.vscode-clangd
@@ -119,4 +118,10 @@
       };
     };
   };
+
+  # Remove directory of vscodium extension symlinks before linking.
+  home.activation.resetVSCodium = lib.hm.dag.entryBefore ["linkGeneration"] ''
+    $DRY_RUN_CMD rm -rf $VERBOSE_ARG \
+        $HOME/.vscode-oss/extensions
+  '';
 }
