@@ -22,6 +22,7 @@
     lesspipe
     nano
     nix-index
+    nixos-rebuild
     openssh
     poppler_utils
     python3
