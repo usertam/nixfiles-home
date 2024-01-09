@@ -65,12 +65,13 @@
             git add .
           fi
           git commit
-          git switch -
           if [ -n "$(git status --porcelain)" ]; then
             git stash
+            git switch -
             git rebase -
             git stash pop
           else
+            git switch -
             git rebase -
           fi
         )
@@ -86,12 +87,13 @@
             git add .
           fi
           git commit
-          git switch -
           if [ -n "$(git status --porcelain)" ]; then
             git stash
+            git switch -
             git rebase -
             git stash pop
           else
+            git switch -
             git rebase -
           fi
         )
