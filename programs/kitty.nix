@@ -5,12 +5,10 @@
     enable = true;
     package = pkgs.kitty;
     font = {
-      package = pkgs.fira-code;
-      name = "Fira Code" + (if pkgs.stdenv.isDarwin then "" else " Medium");
-      size = 12;
+      name = "Brass Mono Code";
+      size = if pkgs.stdenv.isDarwin then 16 else 14;
     };
     extraConfig = ''
-      bold_font                   Fira Code SemiBold
       cursor_shape                underline
       shell_integration           disabled
       cursor_beam_thickness       1.2
@@ -23,7 +21,6 @@
       confirm_os_window_close     0
     '' + (
       if pkgs.stdenv.isDarwin then ''
-        font_size                   14
         macos_option_as_alt         yes
         window_padding_width        12.5
         map alt+left  send_text all \x1b\x62

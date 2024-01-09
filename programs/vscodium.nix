@@ -88,8 +88,9 @@
       # Allow zh-hant unicode symbols.
       "editor.unicodeHighlight.allowedLocales"."zh-hant" = true;
       # terminal font.
+      "terminal.integrated.fontFamily" = "Brass Mono Code";
       "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
-      "terminal.integrated.fontSize" = 13;
+      "terminal.integrated.fontSize" = 15;
       "terminal.integrated.fontLigatures" = true;
       "terminal.integrated.smoothScrolling" = true;
       # Deny chord keybindings; fix nano keybindings.
