@@ -11,14 +11,13 @@
 
   outputs = inputs: let
     forAllSystems = with inputs.nixpkgs.lib; genAttrs platforms.unix;
-    username = "tam";
   in {
     packages = forAllSystems (system: {
-      homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration rec {
+      homeConfigurations."tam" = inputs.home-manager.lib.homeManagerConfiguration rec {
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
-          inherit inputs username;
-          lock = inputs.nixpkgs.lib.importJSON ./flake.lock;
+          inherit inputs;
+          username = "tam";
         };
         modules = [
           ./programs/home.nix

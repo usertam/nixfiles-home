@@ -1,25 +1,33 @@
-{ pkgs, lock, ... }:
+{ lib, pkgs, ... }:
 
 {
-  nix.package = pkgs.nixUnstable;
-  nix.registry.nixpkgs = {
-    from = {
-      type = "indirect";
-      id = "nixpkgs";
+  nix = {
+    # Use unstable version of nix.
+    package = pkgs.nixVersions.unstable;
+
+    # Lock nixpkgs in registry.
+    registry.nixpkgs = {
+      from = {
+        type = "indirect";
+        id = "nixpkgs";
+      };
+      to = let
+        lock = lib.importJSON ../flake.lock;
+      in {
+        inherit (lock.nodes.nixpkgs.locked) rev;
+        type = "github";
+        owner = "nixos";
+        repo = "nixpkgs";
+      };
     };
-    to = {
-      type = "github";
-      owner = "nixos";
-      repo = "nixpkgs";
-      inherit (lock.nodes.nixpkgs.locked) rev;
+
+    settings = {
+      extra-trusted-substituters = [
+        "https://context-minimals.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "context-minimals.cachix.org-1:pYxyH24J/A04fznRlYbTTjWrn9EsfUQvccGMjfXMdj0="
+      ];
     };
-  };
-  nix.settings = {
-    extra-trusted-substituters = [
-      "https://context-minimals.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "context-minimals.cachix.org-1:pYxyH24J/A04fznRlYbTTjWrn9EsfUQvccGMjfXMdj0="
-    ];
   };
 }
