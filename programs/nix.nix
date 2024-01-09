@@ -1,7 +1,7 @@
 { pkgs, lock, ... }:
 
 {
-  nix.package = pkgs.nix;
+  nix.package = pkgs.nixUnstable;
   nix.registry.nixpkgs = {
     from = {
       type = "indirect";
