@@ -120,9 +120,12 @@
     };
   };
 
-  # Remove directory of vscodium extension symlinks before linking.
-  home.activation.resetVSCodium = lib.hm.dag.entryBefore ["linkGeneration"] ''
-    $DRY_RUN_CMD rm -rf $VERBOSE_ARG \
-        $HOME/.vscode-oss/extensions
-  '';
+  # Force regenerate extensions.
+  home.activation.resetCodiumExts = {
+    after = [ "checkFilesChanged" ];
+    before = [ "onFilesChange" ];
+    data = ''
+      changedFiles['.vscode-oss/extensions/.extensions-immutable.json']=1
+    '';
+  };
 }
