@@ -19,6 +19,7 @@
     htop
     imagemagick
     kitty.terminfo
+    less
     lesspipe
     nano
     nix-index
