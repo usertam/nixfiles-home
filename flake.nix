@@ -1,17 +1,6 @@
-# This file is part of the home-manager configuration.
-# Resides in the ~/.config/nixpkgs/ directory.
-
-# To update flake.lock, run:
-# > nix flake update ~/.config/nixpkgs
-
-# To rebuild configuration, run:
-# > home-manager { switch | build }
-
-# To import nixpkgs in `nix repl`, do:
-# nix-repl> :lf nixpkgs
-# nix-repl> pkgs = legacyPackages.x86_64-linux
-
 {
+  description = "usertam's home-manager configuration";
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
