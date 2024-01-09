@@ -15,10 +15,10 @@
     };
   };
   nix.settings = {
-    trusted-substituters = [
+    extra-trusted-substituters = [
       "https://context-minimals.cachix.org"
     ];
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
       "context-minimals.cachix.org-1:pYxyH24J/A04fznRlYbTTjWrn9EsfUQvccGMjfXMdj0="
     ];
   };
