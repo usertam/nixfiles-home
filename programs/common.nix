@@ -14,6 +14,7 @@
     gnugrep
     gnupg
     gnused
+    gnutar
     graphicsmagick
     home-manager
     htop
@@ -24,11 +25,13 @@
     nano
     nix-index
     nixos-rebuild
+    nmap
     openssh
     poppler_utils
     python3
     qrencode
     rclone
     rsync
+    socat
   ];
 }
