@@ -101,16 +101,17 @@
 
       # Alias for qrencode, graphicsmagick and kitty +kitten icat.
       function qrcode() {
+        if [ -z "$1" ]; then 1=$(cat /dev/stdin); fi
         printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:=https://github.com/usertam}" -o- | \
           ${pkgs.graphicsmagick}/bin/gm convert -scale "''${2:-200%}" png:- png:-  | \
           ${pkgs.kitty}/bin/kitty +kitten icat
-        local COL=$(stty size | cut -d\  -f2)
+        local COL=$(tput cols)
         if [ ''${#1} -gt $((COL/2)) ]; then
           1="''${1:0:$((COL/4))}...''${1:$((''${#1}-COL/4)):''${#1}}"
         fi
         printf '\n'
         printf '%*s' $((($COL-''${#1})/2))
-        echo "$1"
+        printf '%q\n' "$1"
       }
     '';
 
