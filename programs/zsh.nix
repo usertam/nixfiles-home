@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   programs.zsh = {
@@ -71,12 +71,36 @@
       }
     '';
 
-    # enable spaceship theme.
-    plugins = lib.singleton {
-      name = "spaceship-prompt";
-      src = pkgs.spaceship-prompt;
-      file = "share/zsh/themes/spaceship.zsh-theme";
-    };
+    plugins = [
+      {
+        # Enable spaceship theme.
+        name = "spaceship-prompt";
+        src = pkgs.spaceship-prompt;
+        file = "share/zsh/themes/spaceship.zsh-theme";
+      }
+      {
+        # Enable zsh-histdb, alternative shell history in sqlite.
+        name = "zsh-histdb";
+        src = pkgs.stdenvNoCC.mkDerivation rec {
+          pname = "zsh-histdb";
+          version = "30797f0";
+          src = pkgs.fetchFromGitHub {
+            owner = "larkery";
+            repo = pname;
+            rev = "30797f0c50c31c8d8de32386970c5d480e5ab35d";
+            sha256 = "sha256-PQIFF8kz+baqmZWiSr+wc4EleZ/KD8Y+lxW2NT35/bg=";
+          };
+          strictDeps = true;
+          dontUnpack = true;
+          dontBuild = true;
+          installPhase = ''
+            mkdir -p $out/lib/${pname}
+            cp -r $src/* $out/lib/${pname}
+          '';
+        };
+        file = "lib/zsh-histdb/sqlite-history.zsh";
+      }
+    ];
 
     # enable less scrolling.
     sessionVariables.LESS = "-R";
