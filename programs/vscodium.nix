@@ -48,6 +48,7 @@
       "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
       "terminal.integrated.fontSize" = 15;
       "terminal.integrated.fontLigatures" = true;
+      "terminal.integrated.cursorStyle" = "underline";
       "terminal.integrated.smoothScrolling" = true;
       # Deny chord keybindings; fix nano keybindings.
       "terminal.integrated.allowChords" = false;
