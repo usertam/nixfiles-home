@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
   # Allow unfree packages.
@@ -8,71 +8,26 @@
     enable = true;
     package = pkgs.vscodium;
     extensions = let
-      azemoh-one-monokai = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "one-monokai";
-          publisher = "azemoh";
-          version = "0.5.0";
-          sha256 = "sha256-ardM7u9lXkkTTPsDVqTl4yniycERYdwTzTQxaa4dD+c=";
-        };
-        meta.license = lib.licenses.mit;
-      };
-      github-copilot = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "copilot";
-          publisher = "github";
-          version = "1.147.0";
-          sha256 = "sha256-Ib8aZ5TXF2RDFtmS+4npuqYUZpV96YteyynExWywZeA=";
-        };
-        meta.license = lib.licenses.unfree;
-      };
-      github-copilot-chat = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "copilot-chat";
-          publisher = "github";
-          version = "0.11.1";
-          sha256 = "sha256-H2AIr/797x3cKqIOiqFwntlRvPjriKCPyPRTEOyN8Ik=";
-        };
-        meta.license = lib.licenses.unfree;
-      };
-      terraform = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "terraform";
-          publisher = "4ops";
-          version = "0.2.5";
-          sha256 = "sha256-y5LljxK8V9Fir9EoG8g9N735gISrlMg3czN21qF/KjI=";
-        };
-        meta.license = lib.licenses.mit;
-      };
-      mrmlnc-vscode-apache = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          name = "vscode-apache";
-          publisher = "mrmlnc";
-          version = "1.2.0";
-          sha256 = "sha256-wXxgrYnX7YxKQJfzgyV7kpG7wJYE4NOPScT4/BeCv5s=";
-        };
-        meta.license = lib.licenses.mit;
-      };
-    in with pkgs.vscode-extensions; [
+      exts = inputs.nix-vscode-extensions.extensions.${pkgs.system};
+      market = exts.vscode-marketplace;
+    in with market; [
       antfu.icons-carbon
-      streetsidesoftware.code-spell-checker
-      github-copilot
-      github-copilot-chat
-      eamodio.gitlens
-      james-yu.latex-workshop
-      pkief.material-icon-theme
+      azemoh.one-monokai
       bbenoist.nix
-      azemoh-one-monokai
+      eamodio.gitlens
       foxundermoon.shell-format
-      terraform
-      redhat.vscode-yaml
-      redhat.vscode-xml
-      llvm-vs-code-extensions.vscode-clangd
-      mrmlnc-vscode-apache
-      scala-lang.scala
-    ] ++ lib.optionals pkgs.stdenv.isLinux [
-      ms-vscode.cpptools
+      github.copilot
+      github.copilot-chat
+      james-yu.latex-workshop
+      market."4ops".terraform
+      mrmlnc.vscode-apache
       ms-python.python
+      ms-vscode.cpptools
+      pkief.material-icon-theme
+      redhat.vscode-xml
+      redhat.vscode-yaml
+      scala-lang.scala
+      streetsidesoftware.code-spell-checker
     ];
     userSettings = {
       # editor font.
