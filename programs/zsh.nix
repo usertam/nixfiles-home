@@ -55,50 +55,6 @@
         return
       }
 
-      function nixfiles-commit() {
-        ( 
-          set -e
-          cd ~/Desktop/projects/nixfiles
-          git switch nixos-lock
-          git switch nixos
-          if [ -z "$(git diff --cached)" ]; then
-            git add .
-          fi
-          git commit
-          if [ -n "$(git status --porcelain)" ]; then
-            git stash
-            git switch -
-            git rebase -
-            git stash pop
-          else
-            git switch -
-            git rebase -
-          fi
-        )
-      }
-
-      function home-manager-commit() {
-        ( 
-          set -e
-          cd ~/Desktop/projects/nixfiles-home
-          git switch home-manager-lock
-          git switch home-manager
-          if [ -z "$(git diff --cached)" ]; then
-            git add .
-          fi
-          git commit
-          if [ -n "$(git status --porcelain)" ]; then
-            git stash
-            git switch -
-            git rebase -
-            git stash pop
-          else
-            git switch -
-            git rebase -
-          fi
-        )
-      }
-
       # Alias for qrencode, graphicsmagick and kitty +kitten icat.
       function qrcode() {
         if [ -z "$1" ]; then 1=$(cat /dev/stdin); fi
