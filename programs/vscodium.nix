@@ -69,6 +69,7 @@
       redhat.vscode-xml
       llvm-vs-code-extensions.vscode-clangd
       mrmlnc-vscode-apache
+      scala-lang.scala
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       ms-vscode.cpptools
       ms-python.python
