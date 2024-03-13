@@ -3,14 +3,20 @@
 {
   programs.kitty = {
     enable = true;
-    package = pkgs.kitty;
+    package = pkgs.kitty.overrideAttrs (prev: {
+      postPatch = (prev.postPatch or "") + ''
+        # Force kitty-integration no-cursor.
+        substituteInPlace shell-integration/zsh/kitty-integration \
+          --replace '(( ! opt[(Ie)no-cursor] ))' 'false'
+      '';
+      installCheckPhase = "";
+    });
     font = {
       name = "Brass Mono Code";
       size = if pkgs.stdenv.isDarwin then 16 else 14;
     };
     extraConfig = ''
       cursor_shape                underline
-      shell_integration           disabled
       cursor_beam_thickness       1.2
       cursor_underline_thickness  1.0
       cursor_blink_interval       0
