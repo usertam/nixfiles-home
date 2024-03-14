@@ -11,6 +11,9 @@
       source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/completion.zsh
       source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/key-bindings.zsh
 
+      # Additional key bindings.
+      bindkey '^[[46;9u' insert-last-word
+
       # Enable zsh corrections.
       setopt correct
 
