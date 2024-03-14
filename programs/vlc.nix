@@ -2,7 +2,7 @@
 
 {
   home.packages = let
-    # use vlc with libplacebo @ 4.157.0.
+    # Use vlc with libplacebo @ 4.157.0.
     vlc-with-libplacebo = pkgs.vlc.override {
       libplacebo = pkgs.libplacebo.overrideAttrs (final: prev: {
         version = "4.157.0";
@@ -15,12 +15,14 @@
         };
       });
     };
-  in with pkgs; [
+  in if pkgs.stdenv.isDarwin then [
+    pkgs.vlc-bin
+  ] else [
     vlc-with-libplacebo
   ];
 
   # Write vlc configurations.
-  xdg.configFile."vlc/vlc-qt-interface.conf" = {
+  xdg.configFile."vlc/vlc-qt-interface.conf" = lib.mkIf pkgs.stdenv.isLinux {
     text = lib.generators.toINI {} {
       "MainWindow" = {
         "AdvToolbar" = "\"11-5;13-5;14-5;\"";
@@ -32,7 +34,7 @@
       };
     };
   };
-  xdg.configFile."vlc/vlcrc" = {
+  xdg.configFile."vlc/vlcrc" = lib.mkIf pkgs.stdenv.isLinux {
     text = lib.generators.toINI {} {
       "gl" = {
         "tone-mapping" = "2";
