@@ -54,7 +54,7 @@
         fi
 
         >&2 printf '> nix shell nixpkgs#%s\e[0m\n' "''${ATTR%.out}"
-        (trap : INT; nix shell "nixpkgs#$ATTR" -c $@; nix shell "nixpkgs#$ATTR")
+        (trap : INT; nix shell "nixpkgs#$ATTR" -c $@ && nix shell "nixpkgs#$ATTR")
         return
       }
 
@@ -105,16 +105,19 @@
       }
     ];
 
-    # enable less scrolling.
+    # Enable less scrolling.
     sessionVariables.LESS = "-R";
 
-    # turn off spaceship exec time decimals.
+    # Turn off direnv log.
+    sessionVariables.DIRENV_LOG_FORMAT = "";
+
+    # Turn off spaceship exec time decimals.
     localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
 
-    # ignore stupid autocorrect suggestions.
+    # Ignore stupid autocorrect suggestions.
     localVariables.CORRECT_IGNORE = "[_|.]*";
 
-    # enable color output.
+    # Enable color output.
     shellAliases = (builtins.listToAttrs
       (map (attr: { name = attr; value = "${attr} --color=auto"; })
         [ "diff" "grep" "ls" ]))
