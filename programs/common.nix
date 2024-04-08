@@ -17,6 +17,7 @@ in {
     coreutils
     diffutils
     discord-canary
+    ffmpeg
     file
     findutils
     git
@@ -31,6 +32,7 @@ in {
     kitty.terminfo
     less
     lesspipe
+    mods
     nano
     nix-index
     nixos-rebuild
@@ -42,5 +44,6 @@ in {
     rclone
     rsync
     socat
+    tailscale
   ];
 }
