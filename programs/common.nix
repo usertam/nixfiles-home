@@ -33,7 +33,6 @@ in {
     less
     lesspipe
     mods
-    nano
     nix-index
     nixos-rebuild
     nmap-with-nc-alias

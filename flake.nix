@@ -30,6 +30,7 @@
           ./programs/fonts.nix
           ./programs/git.nix
           ./programs/kitty.nix
+          ./programs/nano.nix
           ./programs/vlc.nix
           ./programs/nix.nix
           ./programs/nix-index-db.nix
