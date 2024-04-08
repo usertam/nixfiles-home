@@ -67,6 +67,7 @@
       "redhat.telemetry.enabled" = false;
       # Disable updates.
       "update.mode" = "none";
+      "extensions.autoUpdate" = false;
       # github copilot.
       "github.copilot.enable" = {
         "*" = true;
