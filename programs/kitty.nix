@@ -9,7 +9,8 @@
         substituteInPlace shell-integration/zsh/kitty-integration \
           --replace '(( ! opt[(Ie)no-cursor] ))' 'false'
       '';
-      installCheckPhase = "";
+      doCheck = false;
+      doInstallCheck = false;
     });
     font = {
       name = "Brass Mono Code";
