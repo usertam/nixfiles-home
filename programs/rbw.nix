@@ -1,11 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.rbw = {
     enable = true;
-    settings = {
-      email = "heiyiutam@gmail.com";
-      pinentry = "curses";
-    };
+    settings.email = "heiyiutam@gmail.com";
   };
 }
