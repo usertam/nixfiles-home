@@ -1,8 +1,28 @@
 { pkgs, lib, ... }:
 
 let
-  nmap-with-nc-alias = pkgs.symlinkJoin {
-    name = "nmap-with-nc-alias";
+  # Change pixz default tar compress suffix to .tar.xz.
+  # Let pixz provide /bin/xz.
+  pixz' = pkgs.pixz.overrideAttrs (prev: {
+    patchPhase = (prev.patchPhase or "") + ''
+      substituteInPlace src/pixz.c \
+        --replace 'SUF(WRITE, ".tar", ".tpxz");' 'SUF(WRITE, ".tar", ".tar.xz");'
+    '';
+    postInstall = (prev.postInstall or "") + ''
+      ln -s $out/bin/pixz $out/bin/xz
+    '';
+  });
+  # Let pigz provide /bin/gzip.
+  pigz' = pkgs.symlinkJoin {
+    name = "pigz";
+    paths = [ pkgs.pigz ];
+    postBuild = ''
+      ln -s $out/bin/pigz $out/bin/gzip
+    '';
+  };
+  # Let nmap provide /bin/nc and /bin/netcat.
+  nmap' = pkgs.symlinkJoin {
+    name = "nmap";
     paths = [ pkgs.nmap ];
     postBuild = ''
       ln -s $out/bin/ncat $out/bin/nc
@@ -14,6 +34,8 @@ in {
   nixpkgs.config.allowUnfreePredicate = pkg: true;
 
   home.packages = with pkgs; [
+    clang
+    clang-tools
     coreutils
     diffutils
     discord-canary
@@ -35,8 +57,10 @@ in {
     mods
     nix-index
     nixos-rebuild
-    nmap-with-nc-alias
+    nmap'
     openssh
+    pigz'
+    pixz'
     poppler_utils
     python3
     qrencode
