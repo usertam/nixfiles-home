@@ -19,31 +19,32 @@
       github.copilot
       github.copilot-chat
       james-yu.latex-workshop
+      llvm-vs-code-extensions.vscode-clangd
       market."4ops".terraform
       mrmlnc.vscode-apache
       ms-python.python
-      ms-vscode.cpptools
       pkief.material-icon-theme
       redhat.vscode-xml
       redhat.vscode-yaml
       scala-lang.scala
       streetsidesoftware.code-spell-checker
+      tonybaloney.vscode-pets
     ];
     userSettings = {
-      # editor font.
+      # Editor font.
       "editor.fontFamily" = "Fira Code";
       "editor.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
       "editor.fontSize" = 15;
       "editor.fontLigatures" = true;
-      # editor animations.
+      # Cursor and scroll animations.
       "editor.cursorBlinking" = "solid";
       "editor.cursorSmoothCaretAnimation" = "on";
       "editor.smoothScrolling" = true;
-      # github copilot.
+      # Github Copilot fix.
       "editor.inlineSuggest.enabled" = true;
-      # Allow zh-hant unicode symbols.
+      # Disable flagging zh-hant unicode symbols.
       "editor.unicodeHighlight.allowedLocales"."zh-hant" = true;
-      # terminal font.
+      # Terminal font.
       "terminal.integrated.fontFamily" = "Brass Mono Code";
       "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
       "terminal.integrated.fontSize" = 15;
@@ -63,18 +64,23 @@
       "security.workspace.trust.banner" = "never";
       "security.workspace.trust.startupPrompt" = "never";
       "security.workspace.trust.untrustedFiles" = "newWindow";
-      # Telemetry.
+      # Disable telemetry.
       "redhat.telemetry.enabled" = false;
-      # Disable updates.
+      # Disable all updates.
       "update.mode" = "none";
       "extensions.autoUpdate" = false;
-      # github copilot.
+      # Disable Github Copilot on some files.
       "github.copilot.enable" = {
-        "*" = true;
         "plaintext" = false;
-        "markdown" = true;
         "scminput" = false;
+        "*" = true;
       };
+      # Configure clangd path.
+      "clangd.path" = "${pkgs.clang-tools}/bin/clangd";
+      # Configure vscode-pets.
+      "vscode-pets.petColor" = "white";
+      "vscode-pets.petSize" = "small";
+      "vscode-pets.throwBallWithMouse" = true;
     };
   };
 
