@@ -86,6 +86,7 @@
       "github.copilot.enable" = {
         "plaintext" = false;
         "scminput" = false;
+        "markdown" = true;  # Default is false.
         "*" = true;
       };
       # Configure clangd path.
