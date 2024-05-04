@@ -108,6 +108,9 @@
     # Enable less scrolling.
     sessionVariables.LESS = "-R";
 
+    # Enable lesspipe.
+    sessionVariables.LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
+
     # Turn off direnv log.
     sessionVariables.DIRENV_LOG_FORMAT = "";
 
