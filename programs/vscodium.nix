@@ -6,7 +6,20 @@
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    package = pkgs.vscodium.overrideAttrs (prev: let
+      icns = pkgs.fetchurl {
+        url = "https://github.com/VSCodium/vscodium/raw/1.88.1.24104/src/insider/resources/darwin/code.icns";
+        hash = "sha256-20pXkb8q0HxZmMFP4WZTFOqt1k1xUKrzBG9AzcTBrEQ=";
+      };
+    in {
+      postInstall = (prev.postInstall or "") + lib.optionalString pkgs.stdenv.isDarwin ''
+        # Replace icon with insider icon.
+        cp -f ${icns} $out/Applications/VSCodium.app/Contents/Resources/VSCodium.icns
+      '';
+    });
+    enableExtensionUpdateCheck = false;
+    enableUpdateCheck = false;
+    mutableExtensionsDir = false;
     extensions = let
       exts = inputs.nix-vscode-extensions.extensions.${pkgs.system};
       market = exts.vscode-marketplace;
@@ -81,6 +94,11 @@
       "vscode-pets.petColor" = "white";
       "vscode-pets.petSize" = "small";
       "vscode-pets.throwBallWithMouse" = true;
+      # Configure gitlens.
+      "gitlens.showWelcomeOnInstall" = false;
+      "gitlens.showWhatsNewAfterUpgrades" = false;
+      "gitlens.plusFeatures.enabled" = false;
+      "gitlens.launchpad.indicator.enabled" = false;
     };
   };
 
