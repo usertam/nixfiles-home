@@ -39,6 +39,7 @@
       pkief.material-icon-theme
       redhat.vscode-xml
       redhat.vscode-yaml
+      rust-lang.rust-analyzer
       scala-lang.scala
       streetsidesoftware.code-spell-checker
       tonybaloney.vscode-pets
