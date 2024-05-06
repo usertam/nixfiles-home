@@ -17,6 +17,9 @@
       # Enable zsh corrections.
       setopt correct
 
+      # Enable zsh history share.
+      setopt share_history
+
       # Custom nix-index command-not-found handle.
       function command_not_found_handler() {
         # taken from http://www.linuxjournal.com/content/bash-command-not-found
@@ -55,7 +58,10 @@
 
         >&2 printf '> nix shell nixpkgs#%s\e[0m\n' "''${ATTR%.out}"
         (trap : INT; nix shell "nixpkgs#$ATTR" -c $@ && nix shell "nixpkgs#$ATTR")
-        return
+        STATUS=$?
+        print -s nix shell nixpkgs#''${ATTR%.out}; fc -A
+        >&2 printf '\e[2mzsh: %s: nix shell exited with status code %d.\e[0m\n' "$1" $STATUS
+        return $STATUS
       }
 
       # Alias for qrencode, graphicsmagick and kitty +kitten icat.
