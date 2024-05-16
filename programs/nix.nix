@@ -2,8 +2,8 @@
 
 {
   nix = {
-    # Use unstable version of nix.
-    package = pkgs.nixVersions.latest;
+    # Use bleeding-edge version of nix.
+    package = pkgs.nixVersions.git;
 
     # Lock nixpkgs in registry.
     registry.nixpkgs = {
@@ -19,15 +19,6 @@
         owner = "nixos";
         repo = "nixpkgs";
       };
-    };
-
-    settings = {
-      extra-trusted-substituters = [
-        "https://context-minimals.cachix.org"
-      ];
-      extra-trusted-public-keys = [
-        "context-minimals.cachix.org-1:pYxyH24J/A04fznRlYbTTjWrn9EsfUQvccGMjfXMdj0="
-      ];
     };
   };
 }
