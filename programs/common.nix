@@ -51,6 +51,7 @@ in {
     home-manager
     htop
     imagemagick
+    jq
     kitty.terminfo
     less
     lesspipe
