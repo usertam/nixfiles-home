@@ -83,7 +83,8 @@
       # Disable all updates.
       "update.mode" = "none";
       "extensions.autoUpdate" = false;
-      # Disable Github Copilot on some files.
+      # Configure Github Copilot.
+      "github.copilot.editor.enableAutoCompletions" = true;
       "github.copilot.enable" = {
         "plaintext" = false;
         "scminput" = false;
