@@ -43,6 +43,9 @@
       scala-lang.scala
       streetsidesoftware.code-spell-checker
       tonybaloney.vscode-pets
+      nvarner.typst-lsp
+      mgt19937.typst-preview
+      calebfiggers.typst-companion
     ];
     userSettings = {
       # Editor font.

@@ -70,5 +70,6 @@ in {
     rsync
     socat
     tailscale
+    typst
   ];
 }
