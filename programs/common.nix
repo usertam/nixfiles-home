@@ -42,6 +42,7 @@ in {
     ffmpeg
     file
     findutils
+    fzf
     git
     gnugrep
     gnupg

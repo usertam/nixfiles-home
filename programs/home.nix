@@ -8,4 +8,5 @@
     then "/Users/${username}"
     else "/home/${username}";
   programs.home-manager.path = "$HOME/Desktop/projects/nixfiles-home";
+  news.display = "silent";
 }

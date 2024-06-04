@@ -50,8 +50,8 @@
 
         if [ $COUNT -gt 1 ]; then
           # select candidates, auto-fill the first result as prompt
-          PROMPT="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy -e "$1" | head -1 | cut -d. -f1)"
-          ATTR="$(echo "$ATTR" | ${pkgs.fzy}/bin/fzy -p '> nix shell nixpkgs#' -q "$PROMPT")"
+          PROMPT="$(echo "$ATTR" | fzf -f "$1" | head -1 | cut -d. -f1)"
+          ATTR="$(echo "$ATTR" | fzf --reverse --height 40% --prompt '> nix shell nixpkgs#' -q "$PROMPT")"
           if [ -z "$ATTR" ]; then return 127; fi
           >&2 printf '\e[2m'
         fi
@@ -131,7 +131,8 @@
       (map (attr: { name = attr; value = "${attr} --color=auto"; })
         [ "diff" "grep" "ls" ]))
     // {
-      qrcode = "noglob qrcode";
+      "cd?" = "cd $(find * -maxdepth 3 -type d ! -path '*.*' -print 2>/dev/null | fzf --reverse --height 40% --scheme=path)";
+      "qrcode" = "noglob qrcode";
     };
   };
 }
