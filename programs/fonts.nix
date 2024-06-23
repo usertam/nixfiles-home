@@ -32,18 +32,18 @@
     });
 
     # Brass Mono.
-    brass-mono = pkgs.stdenvNoCC.mkDerivation rec {
+    brass-mono = pkgs.stdenvNoCC.mkDerivation (final: {
       pname = "brass-mono";
       version = "1.100";
       src = pkgs.fetchzip {
-        url = "https://github.com/fonsecapeter/brass_mono/releases/download/v${version}/BrassMono.zip";
+        url = "https://github.com/fonsecapeter/brass_mono/releases/download/v${final.version}/BrassMono.zip";
         hash = "sha256-viGI+vYvQ3D3PucZuw6m3dW0UqgdpWzXFDvsScC8IDQ=";
         stripRoot = false;
       };
       installPhase = ''
         install -Dm444 -t $out/share/fonts/truetype *.ttf
       '';
-    };
+    });
 
     # San Francisco Pro.
     sf-pro = pkgs.stdenvNoCC.mkDerivation {
