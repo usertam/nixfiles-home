@@ -105,6 +105,8 @@
       "gitlens.showWhatsNewAfterUpgrades" = false;
       "gitlens.plusFeatures.enabled" = false;
       "gitlens.launchpad.indicator.enabled" = false;
+      # Configure Typst.
+      "typst-lsp.exportPdf" = "never";
     };
   };
 
