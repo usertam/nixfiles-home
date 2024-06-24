@@ -34,8 +34,6 @@ in {
   nixpkgs.config.allowUnfreePredicate = pkg: true;
 
   home.packages = with pkgs; [
-    clang
-    clang-tools
     coreutils
     diffutils
     discord-canary
@@ -56,6 +54,9 @@ in {
     kitty.terminfo
     less
     lesspipe
+    llvmPackages_18.clang
+    llvmPackages_18.libcxx
+    llvmPackages_18.lld
     mods
     nix-index
     nixos-rebuild
