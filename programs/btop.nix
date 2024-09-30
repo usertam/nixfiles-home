@@ -6,8 +6,8 @@
     package = pkgs.btop.overrideAttrs (prev: {
       patches = (prev.patches or []) ++ [
         (pkgs.fetchpatch {
-          url = "https://github.com/usertam/btop/commit/bc79ea7c648e9c16fa0f1e4de218e608cf7630bf.patch";
-          hash = "sha256-oefJ4/Ksvmnbilwgh6GTzmgAS5OhGLrDFx5gq9Nm7YI=";
+          url = "https://github.com/usertam/btop/commit/0d9dcbf5c977ca092ac6a5f550e0b7b9937ac6ba.patch";
+          hash = "sha256-OU0m4UnzmhapPBuhm4b7cpS8bE5gnT3/cNTwHSmYinI=";
         })
       ];
     });
