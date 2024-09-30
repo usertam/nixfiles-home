@@ -22,45 +22,53 @@
 
       # Custom nix-index command-not-found handle.
       function command_not_found_handler() {
-        # taken from http://www.linuxjournal.com/content/bash-command-not-found
-        # - do not run when inside Midnight Commander or within a Pipe
-        if [[ -n "''${MC_SID-}" ]] || ! [[ -t 1 ]]; then
+        # Do not run in non-interactive shell.
+        if ! [ -t 1 ]; then
           >&2 printf 'zsh: %s: command not found' "$1"
           return 127
         fi
 
-        # warn command not found and indicate ongoing dots.
+        # Warn command not found, indicate progress.
         >&2 printf '\e[2m'
         >&2 printf 'zsh: %s: command not found...' "$1"
-        local BACK=$(printf 'zsh: %s: command not found...' "$1" | wc -c)
 
         local ATTR=$(${pkgs.nix-index}/bin/nix-locate \
           --top-level --minimal --at-root --whole-name "/bin/$1")
         local COUNT=$(echo -n "$ATTR" | grep -c '^')
 
         if [ $COUNT -eq 0 ]; then
-          # remove ongoing dots. ("..." -> ".")
+          # No candidates found, remove the extra dots.
           >&2 printf '\b\b  \b\b\e[0m\n'
           return 127
         fi
 
-        # wipe the whole line.
+        # Wipe the line, char by char.
+        local BACK=$(printf 'zsh: %s: command not found...' "$1" | wc -c)
         >&2 printf '\b \b%.0s' {1..$BACK}
         >&2 printf 'zsh: %s: conjuring up nix shell...\n' "$1"
 
         if [ $COUNT -gt 1 ]; then
-          # select candidates, auto-fill the first result as prompt
+          # Let user select candidates; auto-fill the first result as prompt.
           PROMPT="$(echo "$ATTR" | fzf -f "$1" | head -1 | cut -d. -f1)"
           ATTR="$(echo "$ATTR" | fzf --reverse --height 40% --prompt '> nix shell nixpkgs#' -q "$PROMPT")"
           if [ -z "$ATTR" ]; then return 127; fi
           >&2 printf '\e[2m'
         fi
 
+        # Print and record the nix shell command.
         >&2 printf '> nix shell nixpkgs#%s\e[0m\n' "''${ATTR%.out}"
-        (trap : INT; nix shell "nixpkgs#$ATTR" -c $@ && nix shell "nixpkgs#$ATTR")
-        STATUS=$?
         print -s nix shell nixpkgs#''${ATTR%.out}; fc -A
-        >&2 printf '\e[2mzsh: %s: nix shell exited with status code %d.\e[0m\n' "$1" $STATUS
+
+        # Create a init file and run nix shell.
+        local ZDOTDIR=$(mktemp -d)
+        echo "TRAPEXIT() { rm -rf $ZDOTDIR }; $@" > $ZDOTDIR/.zshenv
+        ZDOTDIR=$ZDOTDIR nix shell "nixpkgs#$ATTR"
+
+        # Report and return subshell exit status.
+        STATUS=$?
+        if [ $STATUS -ne 0 ]; then
+          >&2 printf '\e[2mzsh: %s: nix shell exited with status code %d.\e[0m\n' "$1" $STATUS
+        fi
         return $STATUS
       }
 
