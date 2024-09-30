@@ -7,6 +7,6 @@
   home.homeDirectory = if pkgs.stdenv.isDarwin
     then "/Users/${username}"
     else "/home/${username}";
-  programs.home-manager.path = "$HOME/Desktop/projects/nixfiles-home";
+  programs.home-manager.enable = true;
   news.display = "silent";
 }

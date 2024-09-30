@@ -47,7 +47,6 @@ in {
     gnused
     gnutar
     graphicsmagick
-    home-manager
     htop
     imagemagick
     jq
@@ -62,14 +61,17 @@ in {
     nixos-rebuild
     nmap'
     openssh
+    p7zip
     pigz'
     pixz'
     poppler_utils
     python3
+    qemu
     qrencode
     rclone
     rsync
     socat
+    sshfs
     tailscale
     typst
   ];
