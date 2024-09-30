@@ -33,19 +33,14 @@
       github.copilot-chat
       james-yu.latex-workshop
       llvm-vs-code-extensions.vscode-clangd
-      market."4ops".terraform
-      mrmlnc.vscode-apache
       ms-python.python
       pkief.material-icon-theme
-      redhat.vscode-xml
       redhat.vscode-yaml
       rust-lang.rust-analyzer
-      scala-lang.scala
       streetsidesoftware.code-spell-checker
       tonybaloney.vscode-pets
       nvarner.typst-lsp
       mgt19937.typst-preview
-      calebfiggers.typst-companion
     ];
     userSettings = {
       # Editor font.
@@ -107,6 +102,8 @@
       "gitlens.launchpad.indicator.enabled" = false;
       # Configure Typst.
       "typst-lsp.exportPdf" = "never";
+      # Configure rust-analyzer path.
+      "rust-analyzer.server.path" = "${pkgs.rust-analyzer}/bin/rust-analyzer";
     };
   };
 
