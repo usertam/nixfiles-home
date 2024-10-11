@@ -11,12 +11,13 @@
     nix-index-db.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs: let
-    forAllSystems = with inputs.nixpkgs.lib; genAttrs platforms.unix;
+  outputs = { self, nixpkgs, home-manager, ... }@inputs: let
+    forAllSystems = with nixpkgs.lib; genAttrs platforms.unix;
   in {
     packages = forAllSystems (system: {
-      homeConfigurations."tam" = inputs.home-manager.lib.homeManagerConfiguration rec {
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
+      default = self.packages.${system}.homeConfigurations."tam".activationPackage;
+      homeConfigurations."tam" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
           inherit inputs;
           username = "tam";
