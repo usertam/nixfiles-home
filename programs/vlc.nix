@@ -1,24 +1,10 @@
 { pkgs, lib, ... }:
 
 {
-  home.packages = let
-    # Use vlc with libplacebo @ 4.157.0.
-    vlc-with-libplacebo = pkgs.vlc.override {
-      libplacebo = pkgs.libplacebo.overrideAttrs (final: prev: {
-        version = "4.157.0";
-        src = pkgs.fetchFromGitLab {
-          domain = "code.videolan.org";
-          owner = "videolan";
-          repo = prev.pname;
-          rev = "v${final.version}";
-          sha256 = "08kqsd29h8wm0vz7698wh2mdgpwv6anqc5n7d1spnnamwyfwc64h";
-        };
-      });
-    };
-  in if pkgs.stdenv.isDarwin then [
+  home.packages = if pkgs.stdenv.isDarwin then [
     pkgs.vlc-bin
   ] else [
-    vlc-with-libplacebo
+    pkgs.vlc
   ];
 
   # Write vlc configurations.
