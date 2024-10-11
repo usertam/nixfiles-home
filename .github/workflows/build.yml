@@ -1,0 +1,26 @@
+name: "Build"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+    tags:
+    - '*'
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - uses: DeterminateSystems/nix-installer-action@main
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+    - name: Build
+      run: |
+        nix build --print-build-logs
+        if ! nix build --rebuild --keep-failed; then
+          diff -ar $(nix eval --raw){,.check}
+          false
+        fi
