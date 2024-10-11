@@ -72,6 +72,11 @@
         return $STATUS
       }
 
+      # Spawns an impure bash->zsh nix-shell with specified python packages.
+      function python-with() {
+        nix-shell -p "with (builtins.getFlake \"nixpkgs\").legacyPackages.\''${pkgs.system}; python3.withPackages (p: with p; [ $* ])" --command "$SHELL"
+      }
+
       # Alias for qrencode, graphicsmagick and kitty +kitten icat.
       function qrcode() {
         if [ -z "$1" ]; then 1=$(cat /dev/stdin); fi
