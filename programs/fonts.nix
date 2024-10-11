@@ -48,10 +48,10 @@
     # San Francisco Pro.
     sf-pro = pkgs.stdenvNoCC.mkDerivation {
       pname = "sf-pro";
-      version = "1696523982"; # curl -v ... 2>&1 | grep Last-Modified; date --date=... +%s
+      version = "1727471295"; # curl -v ... 2>&1 | grep Last-Modified; date --date=... +%s
       src = pkgs.fetchurl {
         url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-        hash = "sha256-WG0nLn/Giiv0DT8zUwTiWuv/I23RqMSxJsGUbrQzCqc=";
+        hash = "sha256-IccB0uWWfPCidHYX6sAusuEZX906dVYo8IaqeX7/O88=";
       };
       nativeBuildInputs = [ pkgs.p7zip ];
       unpackPhase = ''
