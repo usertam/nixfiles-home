@@ -61,7 +61,7 @@
 
         # Create a init file and run nix shell.
         local ZDOTDIR=$(mktemp -d)
-        echo "TRAPEXIT() { rm -rf $ZDOTDIR }; $@" > $ZDOTDIR/.zshenv
+        echo "TRAPEXIT() { rm -rf $ZDOTDIR }; [ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc"; $@" > $ZDOTDIR/.zshenv
         ZDOTDIR=$ZDOTDIR nix shell "nixpkgs#$ATTR"
 
         # Report and return subshell exit status.
