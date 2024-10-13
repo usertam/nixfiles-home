@@ -45,36 +45,12 @@
       '';
     });
 
-    # San Francisco Pro.
-    sf-pro = pkgs.stdenvNoCC.mkDerivation {
-      pname = "sf-pro";
-      version = "1727471295"; # curl -v ... 2>&1 | grep Last-Modified; date --date=... +%s
-      src = pkgs.fetchurl {
-        url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-        hash = "sha256-IccB0uWWfPCidHYX6sAusuEZX906dVYo8IaqeX7/O88=";
-      };
-      nativeBuildInputs = [ pkgs.p7zip ];
-      unpackPhase = ''
-        7z x $src
-        7z x 'SFProFonts/SF Pro Fonts.pkg'
-        7z x 'Payload~'
-      '';
-      installPhase = ''
-        install -m444 -Dt $out/share/fonts/opentype/sf-pro Library/Fonts/*.otf
-        install -m444 -Dt $out/share/fonts/truetype/sf-pro Library/Fonts/*.ttf
-      '';
-    };
-
   in with pkgs; [
     brass-mono
     fira-code
-    fira-code-symbols
     libertinus
-    noto-fonts
     noto-fonts-cjk-sans-static
     noto-fonts-cjk-serif-static
-    noto-fonts-emoji
-    sf-pro
   ];
 
   # Enable fontconfig configuration.
