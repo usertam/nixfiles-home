@@ -5,6 +5,9 @@
     # Use bleeding-edge version of nix.
     package = pkgs.nixVersions.git;
 
+    # For insane system nix config.
+    settings.extra-experimental-features = [ "nix-command" "flakes" ];
+
     # Lock nixpkgs in registry.
     registry.nixpkgs = {
       from = {
