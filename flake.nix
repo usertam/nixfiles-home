@@ -14,13 +14,14 @@
   outputs = { self, nixpkgs, home-manager, ... }@inputs: let
     forAllSystems = with nixpkgs.lib; genAttrs platforms.unix;
   in {
-    packages = forAllSystems (system: {
-      default = self.packages.${system}.homeConfigurations."tam".activationPackage;
-      homeConfigurations."tam" = home-manager.lib.homeManagerConfiguration {
+    packages = forAllSystems (system: rec {
+      homeCommon = {
+        username,
+        graphical ? false,
+      }: home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
-          inherit inputs;
-          username = "tam";
+          inherit inputs username graphical;
         };
         modules = [
           ./programs/home.nix
@@ -28,19 +29,25 @@
           ./programs/broot.nix
           ./programs/btop.nix
           ./programs/direnv.nix
-          ./programs/fonts.nix
           ./programs/git.nix
-          ./programs/kitty.nix
           ./programs/nano.nix
-          ./programs/vlc.nix
           ./programs/nix.nix
           ./programs/nix-index-db.nix
-          ./programs/rbw.nix
           ./programs/ssh.nix
-          ./programs/vscodium.nix
           ./programs/zsh.nix
+        ] ++ nixpkgs.lib.optionals graphical [
+          ./programs/fonts.nix
+          ./programs/kitty.nix
+          ./programs/vlc.nix
+          ./programs/rbw.nix
+          ./programs/vscodium.nix
         ];
       };
+      homeConfigurations."tam" = homeCommon {
+        username = "tam";
+        graphical = true;
+      };
+      default = homeConfigurations."tam".activationPackage;
     });
   };
 }

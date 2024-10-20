@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, graphical, ... }:
 
 let
   # Change pixz default tar compress suffix to .tar.xz.
@@ -36,19 +36,14 @@ in {
   home.packages = with pkgs; [
     coreutils
     diffutils
-    discord-canary
-    ffmpeg
     file
     findutils
     fzf
     git
     gnugrep
-    gnupg
     gnused
     gnutar
-    graphicsmagick
     htop
-    imagemagick
     jq
     kitty.terminfo
     less
@@ -56,7 +51,6 @@ in {
     llvmPackages_18.clang
     llvmPackages_18.libcxx
     llvmPackages_18.lld
-    mods
     nix-index
     nixos-rebuild
     nmap'
@@ -64,12 +58,19 @@ in {
     p7zip
     pigz'
     pixz'
-    poppler_utils
     python3
+    rsync
+  ] ++ lib.optionals graphical [
+    discord-canary
+    ffmpeg
+    gnupg
+    graphicsmagick
+    imagemagick
+    mods
+    poppler_utils
     qemu
     qrencode
     rclone
-    rsync
     socat
     sshfs
     tailscale
