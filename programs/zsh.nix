@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   programs.zsh = {
@@ -82,7 +82,7 @@
         if [ -z "$1" ]; then 1=$(cat /dev/stdin); fi
         printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:=https://github.com/usertam}" -o- | \
           ${pkgs.graphicsmagick}/bin/gm convert -scale "''${2:-200%}" png:- png:-  | \
-          ${pkgs.kitty}/bin/kitty +kitten icat
+          ${config.programs.kitty.package}/bin/kitty +kitten icat
         local COL=$(tput cols)
         if [ ''${#1} -gt $((COL/2)) ]; then
           1="''${1:0:$((COL/4))}...''${1:$((''${#1}-COL/4)):''${#1}}"

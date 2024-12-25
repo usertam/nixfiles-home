@@ -1,9 +1,13 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   programs.kitty = {
     enable = true;
     package = pkgs.kitty.overrideAttrs (prev: {
+      patches = (prev.patches or []) ++ lib.singleton (pkgs.fetchpatch {
+        url = "https://github.com/kovidgoyal/kitty/commit/155990ce0b3efd69acad9ec8ab97a495f5f883ed.patch";
+        hash = "sha256-e2Hk/qisTEWwIrEamooIdsRKBBDwlB9t9OkDFGuokSI=";
+      });
       postPatch = (prev.postPatch or "") + ''
         # Force kitty-integration no-cursor.
         substituteInPlace shell-integration/zsh/kitty-integration \
@@ -44,4 +48,9 @@
       ''
     );
   };
+
+  # Include kitty terminfo.
+  home.packages = [
+    config.programs.kitty.package.terminfo
+  ];
 }

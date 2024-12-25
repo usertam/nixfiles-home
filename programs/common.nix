@@ -45,7 +45,6 @@ in {
     gnutar
     htop
     jq
-    kitty.terminfo
     less
     lesspipe
     llvmPackages_18.clang

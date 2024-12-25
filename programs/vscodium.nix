@@ -39,8 +39,7 @@
       rust-lang.rust-analyzer
       streetsidesoftware.code-spell-checker
       tonybaloney.vscode-pets
-      nvarner.typst-lsp
-      mgt19937.typst-preview
+      myriad-dreamin.tinymist
     ];
     userSettings = {
       # Editor font.
@@ -100,8 +99,6 @@
       "gitlens.showWhatsNewAfterUpgrades" = false;
       "gitlens.plusFeatures.enabled" = false;
       "gitlens.launchpad.indicator.enabled" = false;
-      # Configure Typst.
-      "typst-lsp.exportPdf" = "never";
       # Configure rust-analyzer path.
       "rust-analyzer.server.path" = "${pkgs.rust-analyzer}/bin/rust-analyzer";
     };
