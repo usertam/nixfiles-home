@@ -4,19 +4,25 @@ on:
   push:
     branches:
     - master
+    - dev
     tags:
     - '*'
 jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [ubuntu-latest, macos-latest]
     name: Build
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@main
     - uses: DeterminateSystems/nix-installer-action@main
-    - uses: DeterminateSystems/magic-nix-cache-action@main
+      with:
+        mac-case-sensitive: true
+    - uses: cachix/cachix-action@master
+      with:
+        name: usertam-nixfiles
+        authToken: ${{secrets.CACHIX_AUTH_TOKEN}}
     - name: Build
       run: |
         nix build --print-build-logs
