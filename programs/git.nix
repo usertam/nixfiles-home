@@ -3,12 +3,13 @@
 {
   programs.git = {
     enable = true;
-    userEmail = "heiyiutam@gmail.com";
+    userEmail = "code@usertam.dev";
     userName = "usertam";
     signing = {
-      key = "A6C5AC43";
+      key = "EC4EE4903C8236982CABD2062D8760B0229E2560";
       signByDefault = true;
     };
+    lfs.enable = true;
     extraConfig = {
       core = {
         editor = "nano";
