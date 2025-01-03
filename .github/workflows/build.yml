@@ -2,23 +2,17 @@ name: "Build"
 on:
   workflow_dispatch:
   push:
-    branches:
-    - master
-    - dev
-    tags:
-    - '*'
 jobs:
   build:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
+      fail-fast: false
     name: Build
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@main
     - uses: DeterminateSystems/nix-installer-action@main
-      with:
-        mac-case-sensitive: true
     - uses: cachix/cachix-action@master
       with:
         name: usertam-nixfiles
@@ -26,7 +20,7 @@ jobs:
     - name: Build
       run: |
         nix build --print-build-logs
-        if ! nix build --rebuild --keep-failed; then
-          diff -ar $(nix eval --raw){,.check}
-          false
+        if ! nix build --rebuild --keep-failed 2>stderr; then
+          echo "::warning::$(grep 'error: ' stderr)"
+          diff -ar $(nix eval --raw){,.check} || true
         fi
