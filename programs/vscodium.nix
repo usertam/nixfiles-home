@@ -15,10 +15,10 @@
         }} $out/Applications/VSCodium.app/Contents/Resources/VSCodium.icns
       '';
     });
-    enableExtensionUpdateCheck = false;
-    enableUpdateCheck = false;
+
+    # Configure extensions, and let them be immutable.
     mutableExtensionsDir = false;
-    extensions = let
+    profiles.default.extensions = let
       extensions' = inputs.nix-vscode-extensions.extensions;
       markets = extensions'.${pkgs.system}.forVSCodeVersion config.programs.vscode.package.version;
     in with markets.vscode-marketplace; [
@@ -28,7 +28,7 @@
       eamodio.gitlens
       foxundermoon.shell-format
       github.copilot
-      github.copilot-chat
+      # github.copilot-chat
       james-yu.latex-workshop
       llvm-vs-code-extensions.vscode-clangd
       ms-python.python
@@ -39,7 +39,13 @@
       tonybaloney.vscode-pets
       myriad-dreamin.tinymist
     ];
-    userSettings = {
+
+    # Disable update checks.
+    profiles.default.enableExtensionUpdateCheck = false;
+    profiles.default.enableUpdateCheck = false;
+
+    # Configure user settings.
+    profiles.default.userSettings = {
       # Editor font.
       "editor.fontFamily" = "Fira Code";
       "editor.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;

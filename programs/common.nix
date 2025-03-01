@@ -47,9 +47,9 @@ in {
     jq
     less
     lesspipe
-    llvmPackages_18.clang
-    llvmPackages_18.libcxx
-    llvmPackages_18.lld
+    llvmPackages_latest.clang
+    llvmPackages_latest.libcxx
+    llvmPackages_latest.lld
     nix-index
     nixos-rebuild
     nmap'

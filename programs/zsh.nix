@@ -20,6 +20,15 @@
       # Enable zsh history share.
       setopt share_history
 
+      # Manually load kitty shell-integration. Fix the cursor underline issue.
+      autoload -Uz -- ${pkgs.runCommand "kitty-integration" { src = pkgs.kitty; } ''
+        mkdir -p $out
+        substitute $(find $src -name kitty-integration) $out/kitty-integration \
+          --replace-fail '(( ! opt[(Ie)no-cursor] ))' 'false'
+      ''}/kitty-integration
+      kitty-integration
+      unfunction kitty-integration
+
       # Custom nix-index command-not-found handle.
       function command_not_found_handler() {
         # Do not run when stdin or stdout not opened on a terminal.

@@ -3,24 +3,7 @@
 {
   programs.kitty = {
     enable = true;
-    package = pkgs.kitty.overrideAttrs (prev: rec {
-      # The PR hasn't propagated to nixpkgs-unstable.
-      # https://github.com/NixOS/nixpkgs/pull/368580
-      version = "0.38.1";
-      src = pkgs.fetchFromGitHub {
-        owner = "kovidgoyal";
-        repo = "kitty";
-        rev = "refs/tags/v${version}";
-        hash = "sha256-0M4Bvhh3j9vPedE/d+8zaiZdET4mXcrSNUgLllhaPJw=";
-      };
-      postPatch = (prev.postPatch or "") + ''
-        # Force kitty-integration no-cursor.
-        substituteInPlace shell-integration/zsh/kitty-integration \
-          --replace '(( ! opt[(Ie)no-cursor] ))' 'false'
-      '';
-      doCheck = false;
-      doInstallCheck = false;
-    });
+    package = pkgs.kitty;
     font = {
       name = "Brass Mono Code";
       size = if pkgs.stdenv.isDarwin then 16 else 14;
