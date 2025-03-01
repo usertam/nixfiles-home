@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   # Allow unfree packages.
@@ -6,24 +6,22 @@
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium.overrideAttrs (prev: let
-      icns = pkgs.fetchurl {
-        url = "https://github.com/VSCodium/vscodium/raw/1.88.1.24104/src/insider/resources/darwin/code.icns";
-        hash = "sha256-20pXkb8q0HxZmMFP4WZTFOqt1k1xUKrzBG9AzcTBrEQ=";
-      };
-    in {
+    package = pkgs.vscodium.overrideAttrs (prev: {
       postInstall = (prev.postInstall or "") + lib.optionalString pkgs.stdenv.isDarwin ''
         # Replace icon with insider icon.
-        cp -f ${icns} $out/Applications/VSCodium.app/Contents/Resources/VSCodium.icns
+        cp -f ${pkgs.fetchurl {
+          url = "https://github.com/VSCodium/vscodium/raw/${prev.version}/src/insider/resources/darwin/code.icns";
+          hash = "sha256-20pXkb8q0HxZmMFP4WZTFOqt1k1xUKrzBG9AzcTBrEQ=";
+        }} $out/Applications/VSCodium.app/Contents/Resources/VSCodium.icns
       '';
     });
     enableExtensionUpdateCheck = false;
     enableUpdateCheck = false;
     mutableExtensionsDir = false;
     extensions = let
-      exts = inputs.nix-vscode-extensions.extensions.${pkgs.system};
-      market = exts.vscode-marketplace;
-    in with market; [
+      extensions' = inputs.nix-vscode-extensions.extensions;
+      markets = extensions'.${pkgs.system}.forVSCodeVersion config.programs.vscode.package.version;
+    in with markets.vscode-marketplace; [
       antfu.icons-carbon
       azemoh.one-monokai
       bbenoist.nix
