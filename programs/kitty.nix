@@ -28,6 +28,7 @@
         map cmd+right send_text all \x05
         map cmd+]     next_window
         map cmd+[     previous_window
+        map cmd+t     new_tab_with_cwd
       ''
       else ''
         initial_window_width        750
