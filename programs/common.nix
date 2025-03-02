@@ -51,6 +51,7 @@ in {
     llvmPackages_latest.libcxx
     llvmPackages_latest.lld
     nix-index
+    nixfmt-rfc-style
     nixos-rebuild
     nmap'
     openssh
