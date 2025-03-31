@@ -44,12 +44,13 @@ in {
     gnused
     gnutar
     htop
+    iconv
     jq
     less
     lesspipe
-    llvmPackages_latest.clang
-    llvmPackages_latest.libcxx
-    llvmPackages_latest.lld
+    llvmPackages_20.clang
+    llvmPackages_20.libcxx
+    llvmPackages_20.lld
     nix-index
     nixfmt-rfc-style
     nixos-rebuild
