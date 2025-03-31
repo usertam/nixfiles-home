@@ -1,8 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
-  # Allow unfree packages.
-  nixpkgs.config.allowUnfreePredicate = pkg: true;
+  # Allow unfree packages. Right now the switch is broken.
+  # nixpkgs.config.allowUnfreePredicate = pkg: true;
 
   programs.vscode = {
     enable = true;
@@ -27,8 +27,8 @@
       bbenoist.nix
       eamodio.gitlens
       foxundermoon.shell-format
-      github.copilot
-      # github.copilot-chat
+      # Broken hot fix.
+      (github.copilot.overrideAttrs (prev: { meta = {}; }))
       james-yu.latex-workshop
       llvm-vs-code-extensions.vscode-clangd
       ms-python.python
