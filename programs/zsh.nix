@@ -193,6 +193,7 @@
         [ "diff" "grep" "ls" ]))
     // {
       "cd?" = "cd $(find * -maxdepth 3 -type d ! -path '*.*' -print 2>/dev/null | fzf --reverse --height 40% --scheme=path)";
+      "clr" = "printf '\033[2J\033[3J\033[1;1H'";
       "qrcode" = "noglob qrcode";
     };
   };
