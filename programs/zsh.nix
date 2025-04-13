@@ -29,6 +29,11 @@
       kitty-integration
       unfunction kitty-integration
 
+      # Load homebrew shell integration.
+      if [ -d "/opt/homebrew" ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
+
       # Custom nix-index command-not-found handle.
       function command_not_found_handler() {
         # Do not run when stdin or stdout not opened on a terminal.
