@@ -1,9 +1,6 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
-  # Allow unfree packages. Right now the switch is broken.
-  # nixpkgs.config.allowUnfreePredicate = pkg: true;
-
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium.overrideAttrs (prev: {
@@ -18,26 +15,22 @@
 
     # Configure extensions, and let them be immutable.
     mutableExtensionsDir = false;
-    profiles.default.extensions = let
-      extensions' = inputs.nix-vscode-extensions.extensions;
-      markets = extensions'.${pkgs.system}.forVSCodeVersion config.programs.vscode.package.version;
-    in with markets.vscode-marketplace; [
-      antfu.icons-carbon
-      azemoh.one-monokai
-      bbenoist.nix
-      eamodio.gitlens
-      foxundermoon.shell-format
-      # Broken hot fix.
-      (github.copilot.overrideAttrs (prev: { meta = {}; }))
-      james-yu.latex-workshop
-      llvm-vs-code-extensions.vscode-clangd
-      ms-python.python
-      pkief.material-icon-theme
-      redhat.vscode-yaml
-      rust-lang.rust-analyzer
-      streetsidesoftware.code-spell-checker
-      tonybaloney.vscode-pets
-      myriad-dreamin.tinymist
+    profiles.default.extensions = pkgs.nix4vscode.forVscode [
+      "antfu.icons-carbon"
+      "azemoh.one-monokai"
+      "bbenoist.nix"
+      "eamodio.gitlens"
+      "foxundermoon.shell-format"
+      "github.copilot"
+      "james-yu.latex-workshop"
+      "llvm-vs-code-extensions.vscode-clangd"
+      "ms-python.python"
+      "pkief.material-icon-theme"
+      "redhat.vscode-yaml"
+      "rust-lang.rust-analyzer"
+      "streetsidesoftware.code-spell-checker"
+      "tonybaloney.vscode-pets"
+      "myriad-dreamin.tinymist"
     ];
 
     # Disable update checks.

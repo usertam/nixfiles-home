@@ -31,7 +31,11 @@ let
   };
 in {
   # Allow unfree packages.
-  nixpkgs.config.allowUnfreePredicate = pkg: true;
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "discord-canary"
+    ];
 
   home.packages = with pkgs; [
     coreutils
