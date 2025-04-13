@@ -35,6 +35,7 @@ in {
     pkg:
     builtins.elem (lib.getName pkg) [
       "discord-canary"
+      "slack"
     ];
 
   home.packages = with pkgs; [
@@ -78,6 +79,7 @@ in {
     qemu
     qrencode
     rclone
+    slack
     socat
     sshfs
     tailscale
