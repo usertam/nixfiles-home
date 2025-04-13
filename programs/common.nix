@@ -59,8 +59,10 @@ in {
     p7zip
     pigz'
     pixz'
+    podman
     python3
     rsync
+    util-linux
   ] ++ lib.optionals graphical [
     discord-canary
     ffmpeg
