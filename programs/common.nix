@@ -29,6 +29,10 @@ let
       ln -s $out/bin/ncat $out/bin/netcat
     '';
   };
+  # Enable HTTP/3 support in curl.
+  curl' = pkgs.curl.override {
+    http3Support = true;
+  };
 in {
   # Allow unfree packages.
   nixpkgs.config.allowUnfreePredicate =
@@ -40,16 +44,17 @@ in {
 
   home.packages = with pkgs; [
     coreutils
+    curl'
     diffutils
     file
     findutils
     fzf
     git
     gnugrep
+    gnupatch
     gnused
     gnutar
     htop
-    iconv
     jq
     less
     lesspipe

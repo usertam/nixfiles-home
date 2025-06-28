@@ -21,11 +21,13 @@
       setopt share_history
 
       # Manually load kitty shell-integration. Fix the cursor underline issue.
-      autoload -Uz -- ${pkgs.runCommand "kitty-integration" { src = pkgs.kitty; } ''
-        mkdir -p $out
-        substitute $(find $src -name kitty-integration) $out/kitty-integration \
-          --replace-fail '(( ! opt[(Ie)no-cursor] ))' 'false'
-      ''}/kitty-integration
+      autoload -Uz -- ${
+        pkgs.runCommand "kitty-integration" { src = pkgs.kitty; } ''
+          mkdir -p $out
+          substitute $(find $src -name kitty-integration) $out/kitty-integration \
+            --replace-fail '(( ! opt[(Ie)no-cursor] ))' 'false'
+        ''
+      }/kitty-integration
       kitty-integration
       unfunction kitty-integration
 
@@ -185,6 +187,13 @@
 
     # Turn off direnv log.
     sessionVariables.DIRENV_LOG_FORMAT = "";
+
+    # Fix compiler-invoking-linker problems like "ld: library not found for -liconv".
+    localVariables.LIBRARY_PATH =
+      let
+        compLibs = [ pkgs.libiconv ] ++ lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.libresolv ];
+      in
+      lib.makeLibraryPath compLibs;
 
     # Turn off spaceship exec time decimals.
     localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
