@@ -6,7 +6,7 @@
     autosuggestion.enable = true;
     enableCompletion = true;
 
-    initExtra = ''
+    initContent = ''
       # Cherry-pick some oh-my-zsh scripts.
       source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/completion.zsh
       source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/key-bindings.zsh
