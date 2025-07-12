@@ -53,10 +53,12 @@ in {
     fzf
     git
     gnugrep
+    gnumake
     gnupatch
     gnused
     gnutar
     htop
+    inetutils
     jq
     less
     lesspipe
@@ -72,6 +74,7 @@ in {
     pigz'
     pixz'
     podman
+    podman-compose
     python3
     rsync
     util-linux
