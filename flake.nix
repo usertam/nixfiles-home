@@ -30,6 +30,7 @@
           ./programs/btop.nix
           ./programs/direnv.nix
           ./programs/git.nix
+          ./programs/gpg.nix
           ./programs/nano.nix
           ./programs/nix.nix
           ./programs/nix-index-db.nix
