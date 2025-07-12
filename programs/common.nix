@@ -38,11 +38,13 @@ in {
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
+      "claude-code"
       "discord-canary"
       "slack"
     ];
 
   home.packages = with pkgs; [
+    claude-code
     coreutils
     curl'
     diffutils

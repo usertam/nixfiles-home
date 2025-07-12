@@ -13,7 +13,10 @@
     extraConfig = {
       core = {
         editor = "nano";
-        excludesfile = builtins.toFile "gitignore" ".DS_Store\n";
+        excludesfile = builtins.toFile "gitignore" ''
+          .DS_Store
+          .claude
+        '';
         pager = "less -+X";
       };
       init.defaultBranch = "master";
