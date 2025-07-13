@@ -33,6 +33,10 @@ let
   curl' = pkgs.curl.override {
     http3Support = true;
   };
+  # Hotfix a tailscale test on aarch64-darwin.
+  tailscale' = pkgs.tailscale.overrideAttrs (prev: {
+    doCheck = if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then false else prev.doCheck;
+  });
 in {
   # Allow unfree packages.
   nixpkgs.config.allowUnfreePredicate =
@@ -92,7 +96,7 @@ in {
     slack
     socat
     sshfs
-    tailscale
+    tailscale'
     typst
   ];
 }
