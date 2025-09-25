@@ -6,6 +6,10 @@
     autosuggestion.enable = true;
     enableCompletion = true;
 
+    # Save 1 billion history entries.
+    history.size = 1000000000;
+    history.save = 1000000000;
+
     initContent = ''
       # Cherry-pick some oh-my-zsh scripts.
       source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/completion.zsh
