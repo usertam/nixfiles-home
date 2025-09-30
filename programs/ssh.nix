@@ -3,9 +3,11 @@
 {
   programs.ssh = {
     enable = true;
-    forwardAgent = true;
-    hashKnownHosts = true;
-    controlMaster = "auto";
-    controlPersist = "15m";
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+      forwardAgent = true;
+      controlMaster = "auto";
+      controlPersist = "15m";
+    };
   };
 }
