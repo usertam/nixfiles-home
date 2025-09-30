@@ -24,9 +24,6 @@
         doInstallCheck = false;
       });
 
-    # In case we have a diabolical system nix config.
-    settings.extra-experimental-features = [ "nix-command" "flakes" ];
-
     # Lock nixpkgs in registry.
     registry.nixpkgs = {
       from = {
@@ -41,6 +38,14 @@
         owner = "nixos";
         repo = "nixpkgs";
       };
+    };
+
+    settings = {
+      experimental-features = [
+        "nix-command" "flakes"
+      ];
+      eval-cores = 0;     # For detsys nix only; enable parallel evaluation.
+      lazy-trees = true;  # For detsys nix only.
     };
   };
 }
