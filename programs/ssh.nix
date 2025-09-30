@@ -8,6 +8,10 @@
       forwardAgent = true;
       controlMaster = "auto";
       controlPersist = "15m";
+      identityFile = [
+        "~/.ssh/id/self"
+        "~/.ssh/id/git"
+      ];
     };
   };
 }
