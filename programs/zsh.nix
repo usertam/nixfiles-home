@@ -53,8 +53,7 @@
         >&2 printf '\e[2m'
         >&2 printf 'zsh: %s: command not found...' "$1"
 
-        local ATTR=$(${pkgs.nix-index}/bin/nix-locate \
-          --top-level --minimal --at-root --whole-name "/bin/$1")
+        local ATTR=$(${pkgs.nix-index}/bin/nix-locate --minimal --at-root --whole-name "/bin/$1")
         local COUNT=$(echo -n "$ATTR" | grep -c '^')
 
         if [ $COUNT -eq 0 ]; then
