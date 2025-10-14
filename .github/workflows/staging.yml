@@ -1,0 +1,69 @@
+name: "Stage flakes updates"
+on:
+  workflow_dispatch:
+    inputs:
+      discard-staging-changes:
+        description: 'Discard all staging branch changes (skip cherry-pick)'
+        required: true
+        type: boolean
+        default: false
+  schedule:
+  - cron: '0 0 * * MON'
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  staging:
+    name: Stage updates on staging branch
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/create-github-app-token@v2
+      id: staging-bot-token
+      with:
+        app-id: ${{ secrets.STAGING_BOT_APP_ID }}
+        private-key: ${{ secrets.STAGING_BOT_PRIVATE_KEY }}
+    - uses: actions/checkout@main
+      with:
+        token: ${{ steps.staging-bot-token.outputs.token }}
+        fetch-depth: 0
+    - name: Set up staging bot identity
+      run: |
+        BOT_LOGIN="${{ steps.staging-bot-token.outputs.app-slug }}[bot]"
+        git config user.name "$BOT_LOGIN"
+        git config user.email "$(gh api "/users/$BOT_LOGIN" --jq '.id')+$BOT_LOGIN@users.noreply.github.com"
+      env:
+        GH_TOKEN: ${{ steps.staging-bot-token.outputs.token }}
+    - uses: DeterminateSystems/nix-installer-action@main
+    - name: Cherry-pick non-bot staging commits onto working master
+      if: inputs.discard-staging-changes != true
+      run: |
+        mapfile -t COMMITS < <(git rev-list origin/staging ^master \
+          --perl-regexp --author='^(?!.*usertam-staging-bot).*' \
+          --reverse)
+
+        if (( ${#COMMITS[@]} )); then
+          echo 'Changes not staged for working master:'
+          git log --no-walk --pretty=format:'    %h %s (%an)' "${COMMITS[@]}" && echo
+          git cherry-pick --empty=drop "${COMMITS[@]}"
+        else
+          echo 'No changes to cherry-pick.'
+        fi
+    - name: Update flake lock file
+      run: |
+        git switch -c staging
+        NIXPKGS_REV=$(curl -s https://raw.githubusercontent.com/usertam/nixfiles/refs/heads/staging/flake.lock | jq -r '.nodes.nixpkgs.locked.rev')
+        nix flake update --override-input nixpkgs "github:NixOS/nixpkgs/$NIXPKGS_REV" --commit-lock-file
+        if ! git diff origin/master staging --exit-code; then
+          echo "FLAKE_UPDATE=true" >> $GITHUB_ENV
+        fi
+    - name: Create pull request
+      if: env.FLAKE_UPDATE == 'true'
+      run: |
+        git push -f origin staging:staging
+        if [ -z $(gh pr list --head staging) ]; then
+          gh pr create --base master --head staging \
+            --title 'Bump flakes inputs' \
+            --body 'Automatic bump by running `nix flake update --commit-lock-file`.'
+        fi
+      env:
+        GH_TOKEN: ${{ steps.staging-bot-token.outputs.token }}
