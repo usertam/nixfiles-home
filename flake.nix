@@ -38,6 +38,7 @@
           ./programs/zsh.nix
         ] ++ nixpkgs.lib.optionals graphical [
           ./programs/fonts.nix
+          ./programs/ghostty.nix
           ./programs/kitty.nix
           ./programs/vlc.nix
           ./programs/rbw.nix
