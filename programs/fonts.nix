@@ -3,41 +3,37 @@
 {
   home.packages = let
 
-    # Static Noto CJK Sans.
-    noto-fonts-cjk-sans-static = pkgs.noto-fonts-cjk-sans.overrideAttrs (prev: {
+    # Static Noto CJK Sans and Sans Serif.
+    noto-fonts-cjk-sans-and-serif-static = pkgs.stdenvNoCC.mkDerivation {
+      pname = "noto-fonts-cjk-sans-and-serif-static";
+      version = "2.003-unstable-2025-10-18";
       src = pkgs.fetchFromGitHub {
-        owner = "googlefonts";
+        owner = "notofonts";
         repo = "noto-cjk";
-        rev = "9f7f3c38eab63e1d1fddd8d50937fe4f1eacdb1d";
-        hash = "sha256-pNC/WJCYHSlU28E/CSFsrEMbyCe/6tjevDlOvDK9RwU=";
-        sparseCheckout = [ "Sans/OTC" ];
+        rev = "f8d157532fbfaeda587e826d4cd5b21a49186f7c";
+        hash = "sha256-sflNY5J+K07v1uUvOkeSlpQJoghXRR0oJjASKXT71Nw=";
+        sparseCheckout = [ "Sans/OTC" "Serif/OTC" ];
       };
       installPhase = ''
-        install -m444 -Dt $out/share/fonts/opentype/noto-cjk Sans/OTC/*.ttc
+        install -Dm444 -t $out/share/fonts/opentype/noto-cjk {Sans,Serif}/OTC/*.ttc
       '';
-    });
-
-    # Static Noto CJK Serif.
-    noto-fonts-cjk-serif-static = pkgs.noto-fonts-cjk-serif.overrideAttrs (prev: {
-      src = pkgs.fetchFromGitHub {
-        owner = "googlefonts";
-        repo = "noto-cjk";
-        rev = "9f7f3c38eab63e1d1fddd8d50937fe4f1eacdb1d";
-        hash = "sha256-Iy4lmWj5l+/Us/dJJ/Jl4MEojE9mrFnhNQxX2zhVngY=";
-        sparseCheckout = [ "Serif/OTC" ];
+      meta = {
+        inherit (pkgs.noto-fonts-cjk-sans.meta)
+          description
+          longDescription
+          homepage
+          license
+          platforms;
       };
-      installPhase = ''
-        install -m444 -Dt $out/share/fonts/opentype/noto-cjk Serif/OTC/*.ttc
-      '';
-    });
+    };
 
     # Brass Mono.
     brass-mono = pkgs.stdenvNoCC.mkDerivation (final: {
       pname = "brass-mono";
-      version = "1.100";
+      version = "1.101";
       src = pkgs.fetchzip {
         url = "https://github.com/fonsecapeter/brass_mono/releases/download/v${final.version}/BrassMono.zip";
-        hash = "sha256-viGI+vYvQ3D3PucZuw6m3dW0UqgdpWzXFDvsScC8IDQ=";
+        hash = "sha256-XamUFHuVRnCUadLdERG9AipiRGWe88+CdxY6+FFyerE=";
         stripRoot = false;
       };
       installPhase = ''
@@ -49,8 +45,7 @@
     brass-mono
     fira-code
     libertinus
-    noto-fonts-cjk-sans-static
-    noto-fonts-cjk-serif-static
+    noto-fonts-cjk-sans-and-serif-static
   ];
 
   # Enable fontconfig configuration.
