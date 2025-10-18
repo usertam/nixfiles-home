@@ -18,27 +18,9 @@
       # Additional key bindings.
       bindkey '^[[46;9u' insert-last-word
 
-      # Enable zsh corrections.
+      # Enable zsh corrections and history share.
       setopt correct
-
-      # Enable zsh history share.
       setopt share_history
-
-      # Manually load kitty shell-integration. Fix the cursor underline issue.
-      autoload -Uz -- ${
-        pkgs.runCommand "kitty-integration" { src = pkgs.kitty; } ''
-          mkdir -p $out
-          substitute $(find $src -name kitty-integration) $out/kitty-integration \
-            --replace-fail '(( ! opt[(Ie)no-cursor] ))' 'false'
-        ''
-      }/kitty-integration
-      kitty-integration
-      unfunction kitty-integration
-
-      # Load homebrew shell integration.
-      if [ -d "/opt/homebrew" ]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-      fi
 
       # Custom nix-index command-not-found handle.
       function command_not_found_handler() {
@@ -92,72 +74,13 @@
         return $STATUS
       }
 
-      # Spawns an impure bash->zsh nix-shell with specified python packages.
+      # Spawns a nix-shell with specified python packages.
       function python-with() {
-        nix-shell -p "with (builtins.getFlake \"nixpkgs\").legacyPackages.\''${pkgs.system}; python3.withPackages (p: with p; [ $* ])" --command "$SHELL"
-      }
-
-      # Alias for qrencode, graphicsmagick and kitty +kitten icat.
-      function qrcode() {
-        if [ -z "$1" ]; then 1=$(cat /dev/stdin); fi
-        printf '\n'; ${pkgs.qrencode}/bin/qrencode "''${1:=https://github.com/usertam}" -o- | \
-          ${pkgs.graphicsmagick}/bin/gm convert -scale "''${2:-200%}" png:- png:-  | \
-          ${config.programs.kitty.package}/bin/kitty +kitten icat
-        local COL=$(tput cols)
-        if [ ''${#1} -gt $((COL/2)) ]; then
-          1="''${1:0:$((COL/4))}...''${1:$((''${#1}-COL/4)):''${#1}}"
-        fi
-        printf '\n'
-        printf '%*s' $((($COL-''${#1})/2))
-        printf '%q\n' "$1"
+        nix-shell -p 'with builtins.getFlake "nixpkgs"; with legacyPackages.${pkgs.system}; python3.withPackages (p: with p; [ '"$*"' ])'
       }
     '';
 
     plugins = [
-      {
-        # Enable spaceship theme.
-        name = "spaceship-prompt";
-        src = pkgs.spaceship-prompt.overrideAttrs (prev: {
-          buildInputs = with pkgs; (prev.buildInputs or []) ++ [ gnugrep gnused ];
-          patches = (prev.patches or []) ++ lib.singleton (pkgs.writeText "customize-for-new-nix-shell.patch" ''
-            diff --git a/sections/nix_shell.zsh b/sections/nix_shell.zsh
-            index 3d35db052..77cdfccfe 100644
-            --- a/sections/nix_shell.zsh
-            +++ b/sections/nix_shell.zsh
-            @@ -10,10 +10,11 @@
-             
-             SPACESHIP_NIX_SHELL_SHOW="''${SPACESHIP_NIX_SHELL_SHOW=true}"
-             SPACESHIP_NIX_SHELL_ASYNC="''${SPACESHIP_NIX_SHELL_ASYNC=false}"
-            +SPACESHIP_NIX_SHELL_VERSION="''${SPACESHIP_NIX_SHELL_VERSION=false}"
-             SPACESHIP_NIX_SHELL_PREFIX="''${SPACESHIP_NIX_SHELL_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"}"
-             SPACESHIP_NIX_SHELL_SUFFIX="''${SPACESHIP_NIX_SHELL_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"}"
-             SPACESHIP_NIX_SHELL_SYMBOL="''${SPACESHIP_NIX_SHELL_SYMBOL="❄ "}"
-            -SPACESHIP_NIX_SHELL_COLOR="''${SPACESHIP_NIX_SHELL_COLOR="yellow"}"
-            +SPACESHIP_NIX_SHELL_COLOR="''${SPACESHIP_NIX_SHELL_COLOR="blue"}"
-             
-             # ------------------------------------------------------------------------------
-             # Section
-            @@ -23,12 +24,12 @@ SPACESHIP_NIX_SHELL_COLOR="''${SPACESHIP_NIX_SHELL_COLOR="yellow"}"
-             spaceship_nix_shell() {
-               [[ $SPACESHIP_NIX_SHELL_SHOW == false ]] && return
-             
-            -  [[ -z "$IN_NIX_SHELL" ]] && return
-            +  [[ -z "$IN_NIX_SHELL" ]] && ! (echo "$PATH" | grep -q '/nix/store') && return
-             
-            -  if [[ -z "$name" || "$name" == "" ]] then
-            -    display_text="$IN_NIX_SHELL"
-            +  if [[ $SPACESHIP_NIX_SHELL_VERSION == true ]]; then
-            +    display_text="$(echo "$PATH" | ${pkgs.gnugrep}/bin/grep -Po '/nix/store.*?/bin' | uniq | ${pkgs.gnused}/bin/sed ':a; s+/.\{42\}-++g; s+/bin++g; s/\n/, /g; N; ba;')"
-               else
-            -    display_text="$IN_NIX_SHELL ($name)"
-            +    display_text="$(echo "$PATH" | ${pkgs.gnugrep}/bin/grep -Po '/nix/store.*?/bin' | uniq | ${pkgs.gnused}/bin/sed ':a; s+/.\{42\}-++g; s+/bin++g; s/-[0-9][0-9.]*//g; s/\n/, /g; N; ba;')"
-               fi
-             
-               # Show prompt section
-            '');
-          });
-        file = "share/zsh/themes/spaceship.zsh-theme";
-      }
       {
         # Enable zsh-histdb, alternative shell history in sqlite.
         name = "zsh-histdb";
@@ -182,8 +105,9 @@
       }
     ];
 
-    # Enable less scrolling.
-    sessionVariables.LESS = "-R";
+    # Let less quit if one screen, ignore case in searches if lowercase,
+    # and output color control characters.
+    sessionVariables.LESS = "-FiR";
 
     # Enable lesspipe.
     sessionVariables.LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
@@ -192,14 +116,12 @@
     sessionVariables.DIRENV_LOG_FORMAT = "";
 
     # Fix compiler-invoking-linker problems like "ld: library not found for -liconv".
-    localVariables.LIBRARY_PATH =
-      let
-        compLibs = [ pkgs.libiconv ] ++ lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.libresolv ];
-      in
-      lib.makeLibraryPath compLibs;
-
-    # Turn off spaceship exec time decimals.
-    localVariables.SPACESHIP_EXEC_TIME_PRECISION = 0;
+    sessionVariables.LIBRARY_PATH = lib.makeLibraryPath (
+      [ pkgs.libiconv ]
+      ++ lib.optionals pkgs.stdenv.isDarwin [
+        pkgs.darwin.libresolv
+      ]
+    );
 
     # Ignore stupid autocorrect suggestions.
     localVariables.CORRECT_IGNORE = "[_|.]*";
@@ -207,11 +129,6 @@
     # Enable color output.
     shellAliases = (builtins.listToAttrs
       (map (attr: { name = attr; value = "${attr} --color=auto"; })
-        [ "diff" "grep" "ls" ]))
-    // {
-      "cd?" = "cd $(find * -maxdepth 3 -type d ! -path '*.*' -print 2>/dev/null | fzf --reverse --height 40% --scheme=path)";
-      "clr" = "printf '\033[2J\033[3J\033[1;1H'";
-      "qrcode" = "noglob qrcode";
-    };
+        [ "diff" "grep" "ls" ]));
   };
 }
