@@ -131,4 +131,46 @@
       (map (attr: { name = attr; value = "${attr} --color=auto"; })
         [ "diff" "grep" "ls" ]));
   };
+
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      character = {
+        success_symbol = "[%](blue)";
+        error_symbol = "[%](red)";
+      };
+      nix_shell = {
+        disabled = true;
+      };
+      git_status = {
+        format = "([\\[$ahead_behind$all_status\\]]($style) )";
+        # Use regular non-dotted symbols, rendering is screwy.
+        ahead = "↑";
+        behind = "↓";
+        diverged = "↕";
+      };
+
+      custom.nix_path_pkgs = let
+        nix_path_pkgs = pkgs.rustPlatform.buildRustPackage {
+          pname = "nix-path-pkgs";
+          version = "0.1.0-unstable-2025-10-20";
+          src = pkgs.fetchFromGitHub {
+            owner = "usertam";
+            repo = "nix-path-pkgs";
+            rev = "bd592fe6b94a1c4572a72d69974e293a81cc0cc1";
+            hash = "sha256-y+w635Y8Xoxuz8ss83O0H7jdSlEoT+fsPKVzEDRfxNQ=";
+          };
+          cargoHash = "sha256-iFHPy0vFBPrHTeMWo0Erx/7RJ9/5L700jHubKcNHatA=";
+          meta.mainProgram = "nix-path-pkgs";
+        };
+      in {
+        command = lib.getExe nix_path_pkgs;
+        when = lib.getExe nix_path_pkgs;
+        symbol = "❄️ ";
+        style = "bold blue";
+        format = "via [$symbol($output)]($style) ";
+      };
+    };
+  };
 }
