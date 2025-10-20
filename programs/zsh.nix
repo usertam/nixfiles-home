@@ -152,24 +152,26 @@
       };
 
       custom.nix_path_pkgs = let
-        nix_path_pkgs = pkgs.rustPlatform.buildRustPackage {
+        nix-path-pkgs = pkgs.rustPlatform.buildRustPackage {
           pname = "nix-path-pkgs";
-          version = "0.1.0-unstable-2025-10-20";
+          version = "0.1.0-unstable-2025-10-21";
           src = pkgs.fetchFromGitHub {
             owner = "usertam";
             repo = "nix-path-pkgs";
-            rev = "bd592fe6b94a1c4572a72d69974e293a81cc0cc1";
-            hash = "sha256-y+w635Y8Xoxuz8ss83O0H7jdSlEoT+fsPKVzEDRfxNQ=";
+            rev = "ed91537792fbde1a72562769c38a4df50ab23cd7";
+            hash = "sha256-4q+4AbH5Y45vxCbe0GL/0VsOxlYH7x+DPAGpL/gUyeI=";
           };
-          cargoHash = "sha256-iFHPy0vFBPrHTeMWo0Erx/7RJ9/5L700jHubKcNHatA=";
+          cargoHash = "sha256-w/niiPOl1UPmNqHH93BZONTEkacZlpHDrJdGRI4Cmms=";
+          doCheck = false;
           meta.mainProgram = "nix-path-pkgs";
         };
       in {
-        command = lib.getExe nix_path_pkgs;
-        when = lib.getExe nix_path_pkgs;
+        command = lib.getExe nix-path-pkgs;
+        when = lib.getExe nix-path-pkgs;
+        format = "via [$symbol($output)]($style) ";
         symbol = "❄️ ";
         style = "bold blue";
-        format = "via [$symbol($output)]($style) ";
+        ignore_timeout = true;
       };
     };
   };
