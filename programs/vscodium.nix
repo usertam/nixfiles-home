@@ -31,6 +31,8 @@
       "streetsidesoftware.code-spell-checker"
       "tonybaloney.vscode-pets"
       "myriad-dreamin.tinymist"
+      "openai.chatgpt"
+      "anthropic.claude-code"
     ];
 
     # Disable update checks.
