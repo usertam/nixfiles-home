@@ -140,9 +140,6 @@
         success_symbol = "[%](blue)";
         error_symbol = "[%](red)";
       };
-      nix_shell = {
-        disabled = true;
-      };
       git_status = {
         format = "([\\[$ahead_behind$all_status\\]]($style) )";
         # Use regular non-dotted symbols, rendering is screwy.
@@ -150,6 +147,10 @@
         behind = "↓";
         diverged = "↕";
       };
+      nix_shell.disabled = true;
+
+      hostname.ssh_symbol = "🌏 ";
+      hostname.style = "bold blue";
 
       custom.nix_path_pkgs = let
         nix-path-pkgs = pkgs.rustPlatform.buildRustPackage {
