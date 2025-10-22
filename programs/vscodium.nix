@@ -33,6 +33,9 @@
       "myriad-dreamin.tinymist"
       "openai.chatgpt"
       "anthropic.claude-code"
+      "github.copilot-chat"
+    ] ++ pkgs.nix4vscode.forOpenVsx [
+      "jeanp413.open-remote-ssh"
     ];
 
     # Disable update checks.
