@@ -81,6 +81,7 @@ in {
     podman-compose
     python3
     rsync
+    tmux
     util-linux
   ] ++ lib.optionals graphical [
     discord-canary
@@ -89,7 +90,7 @@ in {
     graphicsmagick
     imagemagick
     mods
-    poppler_utils
+    poppler-utils
     qemu
     qrencode
     rclone
