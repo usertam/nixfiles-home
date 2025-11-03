@@ -89,7 +89,7 @@ in {
     graphicsmagick
     imagemagick
     mods
-    poppler_utils
+    poppler-utils
     qemu
     qrencode
     rclone
