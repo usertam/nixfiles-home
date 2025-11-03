@@ -76,7 +76,7 @@
 
       # Spawns a nix-shell with specified python packages.
       function python-with() {
-        nix-shell -p 'with builtins.getFlake "nixpkgs"; with legacyPackages.${pkgs.system}; python3.withPackages (p: with p; [ '"$*"' ])'
+        nix-shell --impure -p 'with builtins.getFlake "nixpkgs"; with legacyPackages.''${builtins.currentSystem}; python3.withPackages (p: with p; [ '"$*"' ])'
       }
     '';
 
