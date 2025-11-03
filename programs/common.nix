@@ -81,6 +81,7 @@ in {
     podman-compose
     python3
     rsync
+    tmux
     util-linux
   ] ++ lib.optionals graphical [
     discord-canary
