@@ -155,12 +155,12 @@
       custom.nix_path_pkgs = let
         nix-path-pkgs = pkgs.rustPlatform.buildRustPackage {
           pname = "nix-path-pkgs";
-          version = "0.1.0-unstable-2025-10-21";
+          version = "0.1.0-unstable-2025-11-03";
           src = pkgs.fetchFromGitHub {
             owner = "usertam";
             repo = "nix-path-pkgs";
-            rev = "ed91537792fbde1a72562769c38a4df50ab23cd7";
-            hash = "sha256-4q+4AbH5Y45vxCbe0GL/0VsOxlYH7x+DPAGpL/gUyeI=";
+            rev = "46fefc9489df125989fc89f82481d19371ea133e";
+            hash = "sha256-CAEt1rMwyCSUFZkaVOUWKVne0WLfRRtO8g/kgAK/VRc=";
           };
           cargoHash = "sha256-w/niiPOl1UPmNqHH93BZONTEkacZlpHDrJdGRI4Cmms=";
           doCheck = false;
