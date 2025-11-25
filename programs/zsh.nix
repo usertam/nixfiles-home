@@ -17,6 +17,8 @@
 
       # Additional key bindings.
       bindkey '^[[46;9u' insert-last-word
+      bindkey "\e[1;3D" backward-word
+      bindkey "\e[1;3C" forward-word
 
       # Enable zsh corrections and history share.
       setopt correct

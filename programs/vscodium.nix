@@ -64,8 +64,9 @@
       "terminal.integrated.fontLigatures" = true;
       "terminal.integrated.cursorStyle" = "underline";
       "terminal.integrated.smoothScrolling" = true;
-      # Deny chord keybindings; fix nano keybindings.
+      # Deny chord keybindings; fix mac option+arrow + nano keybindings.
       "terminal.integrated.allowChords" = false;
+      "terminal.integrated.macOptionIsMeta" = true;
       "terminal.integrated.sendKeybindingsToShell" = true;
       # Window appearance.
       "window.titleBarStyle" = "custom";
