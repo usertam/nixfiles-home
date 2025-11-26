@@ -22,7 +22,19 @@
 
       # Enable zsh corrections and history share.
       setopt correct
-      setopt share_history
+
+      # safer write behavior
+      setopt APPEND_HISTORY            # append on exit
+      setopt INC_APPEND_HISTORY_TIME   # append as you run commands, with timestamps
+      setopt HIST_FCNTL_LOCK           # lock the history file to avoid races
+
+      # kill dupes aggressively
+      setopt HIST_IGNORE_DUPS          # drop if same as previous
+      setopt HIST_IGNORE_ALL_DUPS      # drop older dupes on add
+      setopt HIST_SAVE_NO_DUPS         # don’t write dupes to file
+      setopt HIST_EXPIRE_DUPS_FIRST    # when trimming, toss dupes first
+      setopt HIST_REDUCE_BLANKS        # normalize whitespace (helps dedupe)
+      setopt HIST_IGNORE_SPACE         # lines starting with space aren’t saved
 
       # Custom nix-index command-not-found handle.
       function command_not_found_handler() {
