@@ -71,7 +71,6 @@ in {
     llvmPackages_20.lld
     nix-index
     nixfmt-rfc-style
-    nixos-rebuild
     nmap'
     openssh
     p7zip
