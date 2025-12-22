@@ -8,7 +8,7 @@
         # Replace icon with insider icon.
         cp -f ${pkgs.fetchurl {
           url = "https://github.com/VSCodium/vscodium/raw/${prev.version}/src/insider/resources/darwin/code.icns";
-          hash = "sha256-20pXkb8q0HxZmMFP4WZTFOqt1k1xUKrzBG9AzcTBrEQ=";
+          hash = "sha256-nfPW1GU/SD0+D5EhHhaLwVUyLt2lyLaAQXs/BPMTAT4=";
         }} $out/Applications/VSCodium.app/Contents/Resources/VSCodium.icns
       '';
     });
