@@ -45,12 +45,17 @@
         ];
       };
 
-      homeConfigurations."tam" = homeCommon {
-        username = "tam";
+      homeConfigurations."samu" = homeCommon {
+        username = "samu";
         graphical = true;
       };
 
-      default = homeConfigurations."tam".activationPackage;
+      homeConfigurations."samueltam" = homeCommon {
+        username = "samueltam";
+        graphical = true;
+      };
+
+      default = homeConfigurations."samu".activationPackage;
     });
   };
 }
