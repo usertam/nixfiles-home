@@ -2,7 +2,14 @@
 
 {
   home.packages = if pkgs.stdenv.isDarwin then [
-    pkgs.vlc-bin
+    (pkgs.vlc-bin.overrideAttrs (prev: {
+      postInstall = (prev.postInstall or "") + ''
+        cp -f ${pkgs.fetchurl {
+          url = "https://code.videolan.org/-/project/435/uploads/f5b752f5ffb64c37cd62f480e0713b5a/VLC.icns";
+          hash = "sha256-v1R+rxgAkMom8PRvniKUcHJZDpCSjNpw781c1QCk71U=";
+        }} $out/Applications/VLC.app/Contents/Resources/VLC.icns
+      '';
+    }))
   ] else [
     pkgs.vlc
   ];
