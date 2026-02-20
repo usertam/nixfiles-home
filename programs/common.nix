@@ -70,7 +70,7 @@ in {
     llvmPackages_20.libcxx
     llvmPackages_20.lld
     nix-index
-    nixfmt-rfc-style
+    nixfmt
     nmap'
     openssh
     p7zip
