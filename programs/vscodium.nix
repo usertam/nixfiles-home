@@ -19,9 +19,7 @@
       "antfu.icons-carbon"
       "azemoh.one-monokai"
       "bbenoist.nix"
-      "eamodio.gitlens"
       "foxundermoon.shell-format"
-      "github.copilot"
       "james-yu.latex-workshop"
       "llvm-vs-code-extensions.vscode-clangd"
       "ms-python.python"
@@ -84,6 +82,7 @@
       "update.mode" = "none";
       "extensions.autoUpdate" = false;
       # Configure Github Copilot.
+      "chat.disableAIFeatures" = false;
       "github.copilot.editor.enableAutoCompletions" = true;
       "github.copilot.enable" = {
         "plaintext" = false;
@@ -104,6 +103,9 @@
       "gitlens.launchpad.indicator.enabled" = false;
       # Configure rust-analyzer path.
       "rust-analyzer.server.path" = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+      # Enable git blame inline.
+      "git.blame.editorDecoration.enabled" = true;
+      "workbench.colorCustomizations"."git.blame.editorDecorationForeground" = "#686f7d";
     };
   };
 
