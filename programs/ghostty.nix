@@ -3,7 +3,14 @@
 {
   programs.ghostty = {
     enable = true;
-    package = with pkgs; if stdenv.isDarwin then ghostty-bin else ghostty;
+    package = with pkgs; if !stdenv.isDarwin then ghostty else ghostty-bin.overrideAttrs (prev: {
+      pname = "ghostty-bin-nightly";
+      version = "1.2.3-unstable-2026-02-23";
+      src = pkgs.fetchurl {
+        url = "https://tip.files.ghostty.org/c61f184069336c61f7840e2268c6f4dc183b60af/Ghostty.dmg";
+        hash = "sha256-X51CQwaBxC2y/ehNVWWF8E9wid5JIexSGY3aAW9ATbs=";
+      };
+    });
     enableZshIntegration = true;
     settings = {
       theme = "TokyoNight";
