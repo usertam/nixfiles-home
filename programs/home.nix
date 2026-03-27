@@ -2,7 +2,7 @@
 
 {
   # Metadata.
-  home.stateVersion = "22.11";
+  home.stateVersion = "26.05";
   home.username = username;
   home.homeDirectory = if pkgs.stdenv.isDarwin
     then "/Users/${username}"
