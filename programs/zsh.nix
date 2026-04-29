@@ -141,9 +141,13 @@
     localVariables.CORRECT_IGNORE = "[_|.]*";
 
     # Enable color output.
-    shellAliases = (builtins.listToAttrs
-      (map (attr: { name = attr; value = "${attr} --color=auto"; })
-        [ "diff" "grep" "ls" ]));
+    shellAliases = (builtins.listToAttrs (
+      map
+        (attr: { name = attr; value = "${attr} --color=auto"; })
+        [ "diff" "grep" "ls" ]
+    )) // {
+      "rsync" = "rsync --info=progress2";
+    };
   };
 
   programs.starship = {
@@ -166,28 +170,30 @@
       hostname.ssh_symbol = "🌏 ";
       hostname.style = "bold blue";
 
-      custom.nix_path_pkgs = let
-        nix-path-pkgs = pkgs.rustPlatform.buildRustPackage {
-          pname = "nix-path-pkgs";
-          version = "0.1.0-unstable-2026-02-23";
-          src = pkgs.fetchFromGitHub {
-            owner = "usertam";
-            repo = "nix-path-pkgs";
-            rev = "ef7a4bfd1f86f31c9f98cc60a014dba016c701b6";
-            hash = "sha256-/6K/JQjLNEEbni2clBkxmpA02zwzoSr1cEN2PjiXOZ0=";
+      custom.nix_path_pkgs =
+        let
+          nix-path-pkgs = pkgs.rustPlatform.buildRustPackage {
+            pname = "nix-path-pkgs";
+            version = "0.1.0-unstable-2026-02-23";
+            src = pkgs.fetchFromGitHub {
+              owner = "usertam";
+              repo = "nix-path-pkgs";
+              rev = "ef7a4bfd1f86f31c9f98cc60a014dba016c701b6";
+              hash = "sha256-/6K/JQjLNEEbni2clBkxmpA02zwzoSr1cEN2PjiXOZ0=";
+            };
+            cargoHash = "sha256-w/niiPOl1UPmNqHH93BZONTEkacZlpHDrJdGRI4Cmms=";
+            doCheck = false;
+            meta.mainProgram = "nix-path-pkgs";
           };
-          cargoHash = "sha256-w/niiPOl1UPmNqHH93BZONTEkacZlpHDrJdGRI4Cmms=";
-          doCheck = false;
-          meta.mainProgram = "nix-path-pkgs";
+        in
+        {
+          command = lib.getExe nix-path-pkgs;
+          when = lib.getExe nix-path-pkgs;
+          format = "via [$symbol($output)]($style) ";
+          symbol = "❄️ ";
+          style = "bold blue";
+          ignore_timeout = true;
         };
-      in {
-        command = lib.getExe nix-path-pkgs;
-        when = lib.getExe nix-path-pkgs;
-        format = "via [$symbol($output)]($style) ";
-        symbol = "❄️ ";
-        style = "bold blue";
-        ignore_timeout = true;
-      };
     };
   };
 }

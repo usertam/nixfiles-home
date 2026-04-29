@@ -90,6 +90,7 @@
         "markdown" = true;  # Default is false.
         "*" = true;
       };
+      "claudeCode.preferredLocation" = "panel";
       # Configure clangd path.
       "clangd.path" = "${pkgs.clang-tools}/bin/clangd";
       # Configure vscode-pets.
