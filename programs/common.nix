@@ -37,6 +37,10 @@ let
   tailscale' = pkgs.tailscale.overrideAttrs (prev: {
     doCheck = if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then false else prev.doCheck;
   });
+  # Force disable __noChroot in claude-code.
+  claude-code' = pkgs.claude-code.overrideAttrs (prev: {
+    __noChroot = false;
+  });
 in {
   # Allow unfree packages.
   nixpkgs.config.allowUnfreePredicate =
@@ -49,7 +53,7 @@ in {
     ];
 
   home.packages = with pkgs; [
-    claude-code
+    claude-code'
     coreutils
     curl'
     diffutils
