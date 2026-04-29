@@ -126,9 +126,6 @@
     # Enable lesspipe.
     sessionVariables.LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
 
-    # Turn off direnv log.
-    sessionVariables.DIRENV_LOG_FORMAT = "";
-
     # Fix compiler-invoking-linker problems like "ld: library not found for -liconv".
     sessionVariables.LIBRARY_PATH = lib.makeLibraryPath (
       [ pkgs.libiconv ]

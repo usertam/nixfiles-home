@@ -28,7 +28,6 @@
           ./programs/common.nix
           ./programs/broot.nix
           ./programs/btop.nix
-          ./programs/direnv.nix
           ./programs/git.nix
           ./programs/gpg.nix
           ./programs/nano.nix
