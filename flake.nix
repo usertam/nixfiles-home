@@ -5,10 +5,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix4vscode.url = "github:nix-community/nix4vscode";
-    nix4vscode.inputs.nixpkgs.follows = "nixpkgs";
     nix-index-db.url = "github:usertam/nix-index-db/standalone/nixpkgs-unstable";
     nix-index-db.inputs.nixpkgs.follows = "nixpkgs";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: let
@@ -19,7 +19,7 @@
         username,
         graphical ? false,
       }: home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system}.extend inputs.nix4vscode.overlays.forVscode;
+        pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
           inherit inputs username graphical;
         };

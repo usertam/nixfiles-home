@@ -45,6 +45,7 @@ in {
       "claude-code"
       "discord-canary"
       "slack"
+      "vscode-extension-anthropic-claude-code"
     ];
 
   home.packages = with pkgs; [

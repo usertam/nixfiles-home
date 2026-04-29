@@ -15,26 +15,31 @@
 
     # Configure extensions, and let them be immutable.
     mutableExtensionsDir = false;
-    profiles.default.extensions = pkgs.nix4vscode.forVscode [
-      "antfu.icons-carbon"
-      "azemoh.one-monokai"
-      "bbenoist.nix"
-      "foxundermoon.shell-format"
-      "james-yu.latex-workshop"
-      "llvm-vs-code-extensions.vscode-clangd"
-      "ms-python.python"
-      "pkief.material-icon-theme"
-      "redhat.vscode-yaml"
-      "rust-lang.rust-analyzer"
-      "streetsidesoftware.code-spell-checker"
-      "tonybaloney.vscode-pets"
-      "myriad-dreamin.tinymist"
-      "openai.chatgpt"
-      "anthropic.claude-code"
-      "github.copilot-chat"
-    ] ++ pkgs.nix4vscode.forOpenVsx [
-      "jeanp413.open-remote-ssh"
-    ];
+    profiles.default.extensions =
+      let
+        pkgs' = pkgs.appendOverlays [ inputs.nix-vscode-extensions.overlays.default ];
+        extensions = pkgs'.nix-vscode-extensions;
+        vscode = extensions.vscode-marketplace-release;
+        openvsx = extensions.open-vsx-release;
+      in [
+        vscode.antfu.icons-carbon
+        vscode.azemoh.one-monokai
+        vscode.bbenoist.nix
+        vscode.foxundermoon.shell-format
+        vscode.james-yu.latex-workshop
+        vscode.llvm-vs-code-extensions.vscode-clangd
+        vscode.ms-python.python
+        vscode.pkief.material-icon-theme
+        vscode.redhat.vscode-yaml
+        vscode.rust-lang.rust-analyzer
+        vscode.streetsidesoftware.code-spell-checker
+        vscode.tonybaloney.vscode-pets
+        vscode.myriad-dreamin.tinymist
+        vscode.openai.chatgpt
+        vscode.anthropic.claude-code
+        vscode.github.copilot-chat
+        openvsx.jeanp413.open-remote-ssh
+      ];
 
     # Disable update checks.
     profiles.default.enableExtensionUpdateCheck = false;
