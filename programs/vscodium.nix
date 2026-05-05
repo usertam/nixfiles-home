@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
-  programs.vscode = {
+  programs.vscodium = {
     enable = true;
     package = pkgs.vscodium.overrideAttrs (prev: {
       postInstall = (prev.postInstall or "") + lib.optionalString pkgs.stdenv.isDarwin ''
