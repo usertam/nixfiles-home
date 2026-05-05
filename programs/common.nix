@@ -41,6 +41,16 @@ let
   claude-code' = pkgs.claude-code.overrideAttrs (prev: {
     __noChroot = false;
   });
+  # Remove dependency on unused openssl 1.1.
+  discord-canary' = pkgs.discord-canary.overrideAttrs (prev: {
+    buildInputs = lib.filter
+      (p: !(lib.hasPrefix "openssl-1.1" (p.name or "")))
+      (prev.buildInputs or []);
+    autoPatchelfIgnoreMissingDeps = [
+      "libssl.so.1.1"
+      "libcrypto.so.1.1"
+    ];
+  });
 in {
   # Allow unfree packages.
   nixpkgs.config.allowUnfreePredicate =
@@ -88,7 +98,7 @@ in {
     tmux
     util-linux
   ] ++ lib.optionals graphical [
-    discord-canary
+    discord-canary'
     ffmpeg
     gnupg
     graphicsmagick
