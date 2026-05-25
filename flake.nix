@@ -33,7 +33,6 @@
           ./programs/nano.nix
           ./programs/nix.nix
           ./programs/nix-index-db.nix
-          ./programs/ssh.nix
           ./programs/zsh.nix
         ] ++ nixpkgs.lib.optionals graphical [
           ./programs/fonts.nix
