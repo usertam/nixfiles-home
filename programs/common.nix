@@ -29,27 +29,9 @@ let
       ln -s $out/bin/ncat $out/bin/netcat
     '';
   };
-  # Enable HTTP/3 support in curl.
-  curl' = pkgs.curl.override {
-    http3Support = true;
-  };
-  # Hotfix a tailscale test on aarch64-darwin.
-  tailscale' = pkgs.tailscale.overrideAttrs (prev: {
-    doCheck = if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then false else prev.doCheck;
-  });
   # Force disable __noChroot in claude-code.
   claude-code' = pkgs.claude-code.overrideAttrs (prev: {
     __noChroot = false;
-  });
-  # Remove dependency on unused openssl 1.1.
-  discord-canary' = pkgs.discord-canary.overrideAttrs (prev: {
-    buildInputs = lib.filter
-      (p: !(lib.hasPrefix "openssl-1.1" (p.name or "")))
-      (prev.buildInputs or []);
-    autoPatchelfIgnoreMissingDeps = [
-      "libssl.so.1.1"
-      "libcrypto.so.1.1"
-    ];
   });
 in {
   # Allow unfree packages.
@@ -65,7 +47,7 @@ in {
   home.packages = with pkgs; [
     claude-code'
     coreutils
-    curl'
+    curl
     diffutils
     file
     findutils
@@ -81,9 +63,9 @@ in {
     jq
     less
     lesspipe
-    llvmPackages_20.clang
-    llvmPackages_20.libcxx
-    llvmPackages_20.lld
+    llvmPackages_latest.clang
+    llvmPackages_latest.libcxx
+    llvmPackages_latest.lld
     nix-index
     nixfmt
     nmap'
@@ -98,7 +80,7 @@ in {
     tmux
     util-linux
   ] ++ lib.optionals graphical [
-    discord-canary'
+    discord-canary
     ffmpeg
     gnupg
     graphicsmagick
@@ -111,7 +93,7 @@ in {
     slack
     socat
     sshfs
-    tailscale'
+    tailscale
     typst
   ];
 }

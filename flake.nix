@@ -38,7 +38,6 @@
           ./programs/fonts.nix
           ./programs/ghostty.nix
           ./programs/vlc.nix
-          ./programs/rbw.nix
           ./programs/vscodium.nix
         ];
       };
