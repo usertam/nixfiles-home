@@ -1,7 +1,12 @@
 name: "Build"
+
 on:
   workflow_dispatch:
   push:
+
+permissions:
+  id-token: write
+
 jobs:
   build:
     strategy:
@@ -12,11 +17,10 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@main
-    - uses: DeterminateSystems/nix-installer-action@main
-    - uses: cachix/cachix-action@master
+    - uses: NixOS/nix-installer-action@main
+    - uses: Mic92/niks3-action@main
       with:
-        name: usertam-nixfiles
-        authToken: ${{secrets.CACHIX_AUTH_TOKEN}}
+        server-url: https://niks3.usertam.dev
     - name: Build
       run: |
         nix build --print-build-logs
