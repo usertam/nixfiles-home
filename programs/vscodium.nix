@@ -3,15 +3,20 @@
 {
   programs.vscodium = {
     enable = true;
-    package = pkgs.vscodium.overrideAttrs (prev: {
-      postInstall = (prev.postInstall or "") + lib.optionalString pkgs.stdenv.isDarwin ''
-        # Replace icon with insider icon.
-        cp -f ${pkgs.fetchurl {
-          url = "https://github.com/VSCodium/vscodium/raw/${prev.version}/src/insider/resources/darwin/code.icns";
-          hash = "sha256-nfPW1GU/SD0+D5EhHhaLwVUyLt2lyLaAQXs/BPMTAT4=";
-        }} $out/Applications/VSCodium.app/Contents/Resources/VSCodium.icns
-      '';
-    });
+    package = let
+      override = {
+        aarch64-darwin = pkgs.vscodium.overrideAttrs (prev: {
+          version = "1.126.04524";
+          src = pkgs.fetchurl {
+            url = "https://github.com/VSCodium/vscodium/releases/download/1.126.04524/VSCodium-darwin-arm64-1.126.04524.zip";
+            hash = "sha256-8h7lJinrXjnAVdrqcBGLemBVxjmuzz2tBeGZeprYOsA=";
+          };
+          # chmod: cannot access 'Contents/Resources/app/node_modules/@vscode/ripgrep/bin/rg': No such file or directory
+          postPatch = "";
+        });
+      };
+    in
+      override.${pkgs.stdenv.hostPlatform.system} or pkgs.vscodium;
 
     # Configure extensions, and let them be immutable.
     mutableExtensionsDir = false;
