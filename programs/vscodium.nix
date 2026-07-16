@@ -90,7 +90,7 @@
       "redhat.telemetry.enabled" = false;
       # Disable all updates.
       "update.mode" = "none";
-      "extensions.autoUpdate" = false;
+      "extensions.autoUpdate" = "off";
       # Configure Github Copilot.
       "chat.disableAIFeatures" = false;
       "github.copilot.editor.enableAutoCompletions" = true;
