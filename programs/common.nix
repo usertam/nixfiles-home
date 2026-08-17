@@ -40,6 +40,7 @@ in {
     builtins.elem (lib.getName pkg) [
       "claude-code"
       "discord-canary"
+      "discord-canary-unwrapped"
       "slack"
       "vscode-extension-anthropic-claude-code"
     ];
