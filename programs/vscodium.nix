@@ -3,20 +3,27 @@
 {
   programs.vscodium = {
     enable = true;
-    package = let
-      override = {
-        aarch64-darwin = pkgs.vscodium.overrideAttrs (prev: {
-          version = "1.126.04524";
-          src = pkgs.fetchurl {
-            url = "https://github.com/VSCodium/vscodium/releases/download/1.126.04524/VSCodium-darwin-arm64-1.126.04524.zip";
-            hash = "sha256-8h7lJinrXjnAVdrqcBGLemBVxjmuzz2tBeGZeprYOsA=";
+    package =
+      let
+        version = "1.135.06055";
+        release = "https://github.com/VSCodium/vscodium/releases/download/${version}";
+        pins = {
+          aarch64-darwin = {
+            inherit version;
+            src = pkgs.fetchurl {
+              url = "${release}/VSCodium-darwin-arm64-${version}.zip";
+              hash = "sha256-Yf+evDrFVjxjoKnhtHmCJkfn8sMwOwYp8V/v6eKR98w=";
+            };
+            # chmod: cannot access 'Contents/Resources/app/node_modules/@vscode/ripgrep-universal/bin/darwin-arm64/rg': No such file or directory
+            postPatch = "";
           };
-          # chmod: cannot access 'Contents/Resources/app/node_modules/@vscode/ripgrep/bin/rg': No such file or directory
-          postPatch = "";
-        });
-      };
-    in
-      override.${pkgs.stdenv.hostPlatform.system} or pkgs.vscodium;
+        };
+        pin = pins.${pkgs.stdenv.hostPlatform.system} or null;
+      in
+      if pin != null && lib.versionOlder pkgs.vscodium.version pin.version then
+        pkgs.vscodium.overrideAttrs pin
+      else
+        pkgs.vscodium;
 
     # Configure extensions, and let them be immutable.
     mutableExtensionsDir = false;
