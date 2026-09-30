@@ -1,57 +1,77 @@
 { config, pkgs, lib, inputs, ... }:
 
+let
+  # Bump pkg to a newer version by substituting it into the existing src url,
+  # only while pkg is older. Pins are keyed by system; a missing pin defaults
+  # to pkg's own version, which is never older, so pkg is left untouched.
+  # Extra attrs (besides version and hash) are passed through to overrideAttrs.
+  overrideIfNewer = pkg: pins:
+    let
+      args = pins.${pkgs.stdenv.hostPlatform.system} or { inherit (pkg) version; };
+    in
+    if lib.versionOlder pkg.version args.version then
+      pkg.overrideAttrs (prev:
+        let
+          replaceVersion = builtins.replaceStrings [ prev.version ] [ args.version ];
+        in
+        removeAttrs args [ "hash" ] // {
+          src = pkgs.fetchurl {
+            name = replaceVersion prev.src.name;
+            url = replaceVersion (builtins.head prev.src.urls);
+            inherit (args) hash;
+          };
+        })
+    else
+      pkg;
+
+  vscodium = overrideIfNewer pkgs.vscodium {
+    aarch64-darwin = {
+      version = "1.135.06055";
+      hash = "sha256-Yf+evDrFVjxjoKnhtHmCJkfn8sMwOwYp8V/v6eKR98w=";
+      # chmod: cannot access 'Contents/Resources/app/node_modules/@vscode/ripgrep-universal/bin/darwin-arm64/rg': No such file or directory
+      postPatch = "";
+    };
+  };
+
+  # Extension sources.
+  pkgs' = pkgs.appendOverlays [ inputs.nix-vscode-extensions.overlays.default ];
+  extensions = pkgs'.nix-vscode-extensions;
+  vscode = extensions.vscode-marketplace-release;
+  openvsx = extensions.open-vsx-release;
+
+  claude-code = overrideIfNewer vscode.anthropic.claude-code {
+    aarch64-darwin = {
+      version = "2.1.285";
+      hash = "sha256-rOTO8zbsL+YrsrPhj1TN5PhQWp8y6XoJqn7z1ZJh5pw=";
+    };
+  };
+in
 {
   programs.vscodium = {
     enable = true;
-    package =
-      let
-        version = "1.135.06055";
-        release = "https://github.com/VSCodium/vscodium/releases/download/${version}";
-        pins = {
-          aarch64-darwin = {
-            inherit version;
-            src = pkgs.fetchurl {
-              url = "${release}/VSCodium-darwin-arm64-${version}.zip";
-              hash = "sha256-Yf+evDrFVjxjoKnhtHmCJkfn8sMwOwYp8V/v6eKR98w=";
-            };
-            # chmod: cannot access 'Contents/Resources/app/node_modules/@vscode/ripgrep-universal/bin/darwin-arm64/rg': No such file or directory
-            postPatch = "";
-          };
-        };
-        pin = pins.${pkgs.stdenv.hostPlatform.system} or null;
-      in
-      if pin != null && lib.versionOlder pkgs.vscodium.version pin.version then
-        pkgs.vscodium.overrideAttrs pin
-      else
-        pkgs.vscodium;
+    package = vscodium;
 
     # Configure extensions, and let them be immutable.
     mutableExtensionsDir = false;
-    profiles.default.extensions =
-      let
-        pkgs' = pkgs.appendOverlays [ inputs.nix-vscode-extensions.overlays.default ];
-        extensions = pkgs'.nix-vscode-extensions;
-        vscode = extensions.vscode-marketplace-release;
-        openvsx = extensions.open-vsx-release;
-      in [
-        vscode.antfu.icons-carbon
-        vscode.azemoh.one-monokai
-        vscode.bbenoist.nix
-        vscode.foxundermoon.shell-format
-        vscode.james-yu.latex-workshop
-        vscode.llvm-vs-code-extensions.vscode-clangd
-        vscode.ms-python.python
-        vscode.pkief.material-icon-theme
-        vscode.redhat.vscode-yaml
-        vscode.rust-lang.rust-analyzer
-        vscode.streetsidesoftware.code-spell-checker
-        vscode.tonybaloney.vscode-pets
-        vscode.myriad-dreamin.tinymist
-        vscode.openai.chatgpt
-        vscode.anthropic.claude-code
-        vscode.github.copilot-chat
-        openvsx.jeanp413.open-remote-ssh
-      ];
+    profiles.default.extensions = [
+      vscode.antfu.icons-carbon
+      vscode.azemoh.one-monokai
+      vscode.bbenoist.nix
+      vscode.foxundermoon.shell-format
+      vscode.james-yu.latex-workshop
+      vscode.llvm-vs-code-extensions.vscode-clangd
+      vscode.ms-python.python
+      vscode.pkief.material-icon-theme
+      vscode.redhat.vscode-yaml
+      vscode.rust-lang.rust-analyzer
+      vscode.streetsidesoftware.code-spell-checker
+      vscode.tonybaloney.vscode-pets
+      vscode.myriad-dreamin.tinymist
+      vscode.openai.chatgpt
+      claude-code
+      vscode.github.copilot-chat
+      openvsx.jeanp413.open-remote-ssh
+    ];
 
     # Disable update checks.
     profiles.default.enableExtensionUpdateCheck = false;
