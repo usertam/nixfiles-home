@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 {
-  home.packages = if pkgs.stdenv.isDarwin then [
+  home.packages = if pkgs.stdenv.hostPlatform.isDarwin then [
     (pkgs.vlc-bin.overrideAttrs (prev: {
       postInstall = (prev.postInstall or "") + ''
         cp -f ${pkgs.fetchurl {
@@ -15,7 +15,7 @@
   ];
 
   # Write vlc configurations.
-  xdg.configFile."vlc/vlc-qt-interface.conf" = lib.mkIf pkgs.stdenv.isLinux {
+  xdg.configFile."vlc/vlc-qt-interface.conf" = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     text = lib.generators.toINI {} {
       "MainWindow" = {
         "AdvToolbar" = "\"11-5;13-5;14-5;\"";
@@ -27,7 +27,7 @@
       };
     };
   };
-  xdg.configFile."vlc/vlcrc" = lib.mkIf pkgs.stdenv.isLinux {
+  xdg.configFile."vlc/vlcrc" = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     text = lib.generators.toINI {} {
       "gl" = {
         "tone-mapping" = "2";

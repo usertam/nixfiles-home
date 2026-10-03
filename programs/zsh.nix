@@ -129,7 +129,7 @@
     # Fix compiler-invoking-linker problems like "ld: library not found for -liconv".
     sessionVariables.LIBRARY_PATH = lib.makeLibraryPath (
       [ pkgs.libiconv ]
-      ++ lib.optionals pkgs.stdenv.isDarwin [
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
         pkgs.darwin.libresolv
       ]
     );

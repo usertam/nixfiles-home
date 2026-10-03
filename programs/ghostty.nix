@@ -3,7 +3,7 @@
 {
   programs.ghostty = {
     enable = true;
-    package = with pkgs; if !stdenv.isDarwin then ghostty else ghostty-bin;
+    package = with pkgs; if !stdenv.hostPlatform.isDarwin then ghostty else ghostty-bin;
     enableZshIntegration = true;
     settings = {
       theme = "TokyoNight";

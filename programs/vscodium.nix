@@ -81,7 +81,7 @@ in
     profiles.default.userSettings = {
       # Editor font.
       "editor.fontFamily" = "Fira Code";
-      "editor.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
+      "editor.fontWeight" = if pkgs.stdenv.hostPlatform.isDarwin then 400 else 500;
       "editor.fontSize" = 15;
       "editor.fontLigatures" = true;
       # Cursor and scroll animations.
@@ -94,7 +94,7 @@ in
       "editor.unicodeHighlight.allowedLocales"."zh-hant" = true;
       # Terminal font.
       "terminal.integrated.fontFamily" = "Brass Mono Code";
-      "terminal.integrated.fontWeight" = if pkgs.stdenv.isDarwin then 400 else 500;
+      "terminal.integrated.fontWeight" = if pkgs.stdenv.hostPlatform.isDarwin then 400 else 500;
       "terminal.integrated.fontSize" = 15;
       "terminal.integrated.fontLigatures" = true;
       "terminal.integrated.cursorStyle" = "underline";
