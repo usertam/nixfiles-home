@@ -68,6 +68,7 @@ in
       vscode.tonybaloney.vscode-pets
       vscode.myriad-dreamin.tinymist
       vscode.openai.chatgpt
+      vscode.openai.codex-audio
       claude-code
       vscode.github.copilot-chat
       openvsx.jeanp413.open-remote-ssh
