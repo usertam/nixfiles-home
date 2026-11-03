@@ -91,7 +91,6 @@ in {
     qemu
     qrencode
     rclone
-    slack
     socat
     sshfs
     tailscale
